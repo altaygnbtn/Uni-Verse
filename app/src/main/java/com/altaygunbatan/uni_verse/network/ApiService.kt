@@ -1,23 +1,12 @@
-package com.altaygunbatan.uni_verse.API
-
-import com.altaygunbatan.uni_verse.dataClasses.Event
-import com.altaygunbatan.uni_verse.dataClasses.User
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+package com.altaygunbatan.uni_verse.network
 
 
 interface ApiService {
-    @GET("events")
-    suspend fun getEvents(): List<Event>
+    fun login(
 
-    @POST("events")
-    suspend fun createEvent()
-
-    @GET("users/{id}")
-    suspend fun getUser(@Path("id") userId: String): User
-
-    @POST("users")
-    suspend fun updateUser(@)
+    )
 }
+
+
+
+

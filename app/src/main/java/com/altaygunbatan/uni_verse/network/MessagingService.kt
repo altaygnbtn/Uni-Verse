@@ -1,4 +1,4 @@
-package com.altaygunbatan.uni_verse.API
+package com.altaygunbatan.uni_verse.network
 
 import android.app.NotificationManager
 import android.content.Context

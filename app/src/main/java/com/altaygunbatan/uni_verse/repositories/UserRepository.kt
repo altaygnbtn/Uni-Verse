@@ -1,4 +1,4 @@
-package com.altaygunbatan.uni_verse.userRepository
+package com.altaygunbatan.uni_verse.repositories
 
 import com.altaygunbatan.uni_verse.dataClasses.User
 
