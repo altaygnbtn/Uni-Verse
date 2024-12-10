@@ -13,11 +13,11 @@ interface ApiService {
     suspend fun getEvents(): List<Event>
 
     @POST("events")
-    suspend fun createEvent(@Body event: Event)
+    suspend fun createEvent()
 
     @GET("users/{id}")
     suspend fun getUser(@Path("id") userId: String): User
 
     @POST("users")
-    suspend fun updateUser(@Body user: User)
+    suspend fun updateUser(@)
 }

@@ -9,8 +9,8 @@ class UserRepository {
 
         return User(
             id = userId,
-            email = "user@example.com",
-            username = "John Doe",
+            email = "selin.yilmaz@std.yeditepe.edu.tr",
+            username = "Selin Yilmaz",
             department = "Computer Science",
             age = 22,
             gender = "female",
