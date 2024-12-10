@@ -9,5 +9,5 @@ data class User(
     val gender: String,
     val school: String,
     val hobbies: List<String>,
-    val friends: List<String>
+    val friends: List<User>
 )
