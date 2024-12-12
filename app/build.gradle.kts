@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.altaygunbatan.uni_verse"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.altaygunbatan.uni_verse"
@@ -59,19 +59,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //ViewModel
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
 
-    //Room
-    implementation ("androidx.room:room-runtime:2.5.1")
 
-    //Retrofit API Service
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    //Firebase Messaging
-    implementation ("com.google.firebase:firebase-auth-ktx:22.1.0")
-    implementation ("com.google.firebase:firebase-messaging:24.1.0")
 
     implementation ("androidx.compose.ui:ui:1.5.1")
     implementation ("androidx.compose.material:material:1.5.1")
