@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "796089612205",
+    "project_id": "uni-verse-9e448",
+    "storage_bucket": "uni-verse-9e448.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796089612205:android:7db8aa10ffb4abad9ed324",
+        "android_client_info": {
+          "package_name": "com.altaygunbatan.uni_verse"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJXmdi1r1BzbO4p4nZTFzaZWdLX_csEMk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
