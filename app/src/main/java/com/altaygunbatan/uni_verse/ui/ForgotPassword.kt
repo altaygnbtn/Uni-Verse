@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
-import com.altaygunbatan.uni_verse.viewModels.AuthViewModel
+
 
 
 @Composable

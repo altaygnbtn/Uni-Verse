@@ -47,7 +47,7 @@ import androidx.navigation.compose.rememberNavController
 import com.altaygunbatan.uni_verse.R
 import com.altaygunbatan.uni_verse.ui.theme.backgroundDark
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
-import com.altaygunbatan.uni_verse.viewModels.AuthViewModel
+
 import com.google.firebase.auth.FirebaseAuth
 
 

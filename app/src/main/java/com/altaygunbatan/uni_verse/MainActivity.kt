@@ -22,7 +22,7 @@ import com.altaygunbatan.uni_verse.ui.AppNavigation
 import com.altaygunbatan.uni_verse.ui.LoginPage
 import com.altaygunbatan.uni_verse.ui.theme.AppTypography
 import com.altaygunbatan.uni_verse.ui.theme.UniVerseTheme
-import com.altaygunbatan.uni_verse.viewModels.AuthViewModel
+
 
 
 class MainActivity : ComponentActivity() {
