@@ -92,7 +92,7 @@ fun LoginPage( navController: NavController, onLoginSuccess: () -> Unit) {
                 .wrapContentSize(Alignment.Center)
         ){
         TextField(
-            modifier = Modifier.size(width = 345.dp, height = 45.dp),
+            modifier = Modifier.size(width = 345.dp, height = 55.dp),
             value = email,
             onValueChange = {
                 email = it
@@ -121,7 +121,7 @@ fun LoginPage( navController: NavController, onLoginSuccess: () -> Unit) {
                 .wrapContentSize(Alignment.Center)
         ) {
             TextField(
-                modifier = Modifier.size(width = 345.dp, height = 45.dp),
+                modifier = Modifier.size(width = 345.dp, height = 55.dp),
                 value =password,
                 onValueChange = {
                     password = it
