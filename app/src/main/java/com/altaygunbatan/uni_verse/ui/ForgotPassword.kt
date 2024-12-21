@@ -1,63 +1,147 @@
 package com.altaygunbatan.uni_verse.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
+import com.altaygunbatan.uni_verse.viewModels.AuthViewModel
 
 
 @Composable
 fun ForgotPasswordPage(navController : NavController) {
+    var email by rememberSaveable { mutableStateOf("") }
+
+
 
     Column(
         modifier = Modifier.fillMaxSize()
+            .background(color = Color(red = 255, green = 250, blue = 241))
     ) {
         Text(
             text = "FORGOT PASSWORD",
-            modifier = Modifier.padding(start = 50.dp, top = 50.dp,)
+            fontFamily = displayFontFamily,
+            fontSize = 32.sp,
+            modifier = Modifier.padding(start = 30.dp, top = 47.dp,)
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Text(text = "No problem! Enter the e-mail address associated with your account. We'll send you a secure link to reset your password")
-
+        Spacer(modifier = Modifier.height(30.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentSize(Alignment.Center)
+        ) {
+            Text(
+                text = "No problem! Enter the e-mail address associated with your account. We'll send you a secure link to reset your password",
+                fontFamily = displayFontFamily,
+                fontSize = 22.sp,
+                modifier = Modifier.padding(start = 10.dp)
+            )
+        }
         Spacer(modifier = Modifier.height(200.dp))
 
-        Text(text = "Register E-Mail")
+        Text(
+            text = "Register E-Mail",
+            fontFamily = displayFontFamily,
+            fontSize = 22.sp,
+            modifier = Modifier.padding(start = 30.dp)
+        )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(35.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentSize(Alignment.Center)
+        ) {
+            androidx.compose.material.TextField(
+                modifier = Modifier.size(width = 345.dp, height = 45.dp),
+                value = email,
+                onValueChange = {
+                    email = it
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent
+                ),
+                shape = RoundedCornerShape(20.dp),
 
-        EmailTextField()
+            )
 
-        Spacer(modifier = Modifier.height(40.dp))
+        }
+        Spacer(modifier = Modifier.height(70.dp))
 
-        MyButton("SEND LINK")
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentSize(Alignment.Center)
+        ){
+            Button(onClick = {
+            },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(red = 40, green = 84, blue = 100),
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(20.dp),
+                modifier = Modifier.size(width = 345.dp, height = 45.dp)
+            ) {
+                Text(text = "SEND LINK",
+                    fontFamily = displayFontFamily,
+                    fontSize = 22.sp
+                    )
+            }
 
-        Spacer(modifier = Modifier.height(250.dp))
+        }
+
+        Spacer(modifier = Modifier.height(100.dp))
 
         TextButton(onClick = {
             navController.navigate("login")
-        }) {
-            Text(text = "Back")
+        },
+            modifier = Modifier.padding(start = 19.dp)) {
+            Text(text = "Back",
+                fontFamily = displayFontFamily,
+                fontSize = 15.sp,
+                color = Color(red = 40, green = 84, blue = 100))
         }
 
 
     }
+
 }
 
 @Preview
 @Composable
-fun ForgotPasswordPreview() {
-    ForgotPasswordPage(rememberNavController())
+fun PreviewForgotPasswordPage() {
+    ForgotPasswordPage(navController = rememberNavController())
+
 }
