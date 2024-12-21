@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.altaygunbatan.uni_verse.viewModels.AuthViewModel
 
 
 @Composable
@@ -16,10 +17,10 @@ fun AppNavigation(modifier : Modifier = Modifier) {
 
 
         composable("login") {
-                LoginPage(navController = navController)
-            }
+            LoginPage(navController = navController, onLoginSuccess = {navController.navigate("home")})
+        }
         composable("signup") {
-            SignupPage(navController = navController)
+            SignupPage(navController = navController, onSignupSuccess = {navController.navigate("login")})
         }
         composable("home") {
             HomePage(navController = navController)

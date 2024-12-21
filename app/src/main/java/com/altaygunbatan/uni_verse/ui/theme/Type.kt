@@ -35,6 +35,13 @@ val displayFontFamily = FontFamily(
     )
 )
 
+val Typography = Typography(
+    bodyLarge = TextStyle(
+        fontFamily = displayFontFamily,
+        fontSize = 32.sp
+    )
+)
+
 // Default Material 3 typography values
 val baseline = Typography()
 
