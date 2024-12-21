@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -36,13 +37,16 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
 import com.altaygunbatan.uni_verse.viewModels.AuthViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
 fun ForgotPasswordPage(navController : NavController) {
     var email by rememberSaveable { mutableStateOf("") }
 
+    var showMessage by remember { mutableStateOf(false) }
 
+    var message by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -84,7 +88,7 @@ fun ForgotPasswordPage(navController : NavController) {
                 .wrapContentSize(Alignment.Center)
         ) {
             androidx.compose.material.TextField(
-                modifier = Modifier.size(width = 345.dp, height = 45.dp),
+                modifier = Modifier.size(width = 345.dp, height = 55.dp),
                 value = email,
                 onValueChange = {
                     email = it
@@ -95,7 +99,7 @@ fun ForgotPasswordPage(navController : NavController) {
                 ),
                 shape = RoundedCornerShape(20.dp),
 
-            )
+                )
 
         }
         Spacer(modifier = Modifier.height(70.dp))
@@ -104,9 +108,18 @@ fun ForgotPasswordPage(navController : NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentSize(Alignment.Center)
-        ){
-            Button(onClick = {
-            },
+        ) {
+            Button(
+                onClick = {
+                    sendPasswordResetEmail(email) { success, response ->
+                        if (success) {
+                            message = "Reset link sent to $email"
+                        } else {
+                            message = response ?: "Error occurred, please try again."
+                        }
+                        showMessage = true
+                    }
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(red = 40, green = 84, blue = 100),
                     contentColor = Color.White
@@ -114,29 +127,62 @@ fun ForgotPasswordPage(navController : NavController) {
                 shape = RoundedCornerShape(20.dp),
                 modifier = Modifier.size(width = 345.dp, height = 45.dp)
             ) {
-                Text(text = "SEND LINK",
+                Text(
+                    text = "SEND LINK",
                     fontFamily = displayFontFamily,
                     fontSize = 22.sp
-                    )
+                )
             }
 
         }
 
         Spacer(modifier = Modifier.height(100.dp))
 
-        TextButton(onClick = {
-            navController.navigate("login")
-        },
-            modifier = Modifier.padding(start = 19.dp)) {
-            Text(text = "Back",
+        TextButton(
+            onClick = {
+                navController.popBackStack()
+            },
+            modifier = Modifier.padding(start = 19.dp)
+        ) {
+            Text(
+                text = "Back",
                 fontFamily = displayFontFamily,
                 fontSize = 15.sp,
-                color = Color(red = 40, green = 84, blue = 100))
+                color = Color(red = 40, green = 84, blue = 100)
+            )
         }
 
 
     }
+    if (showMessage) {
+        AlertDialog(
+            onDismissRequest = { showMessage = false },
+            title = { Text("Message") },
+            text = { Text(message) },
+            confirmButton = {
+                TextButton(onClick = { showMessage = false }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+}
 
+
+fun sendPasswordResetEmail(email: String, callback: (Boolean, String?) -> Unit) {
+    if (email.isEmpty()) {
+        callback(false, "Please enter your email.")
+        return
+    }
+
+    FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                callback(true, null)
+            } else {
+                callback(false, task.exception?.localizedMessage)
+            }
+        }
 }
 
 @Preview

@@ -82,7 +82,7 @@ fun MyButton( text: String) {
 @Composable
 fun MyButton2(text2:String, navController: NavController){
     Button (modifier = Modifier.size(width = 241.dp, height = 40.dp),
-        onClick = { navController.navigate("login") },
+        onClick = { navController.navigate("home") },
         colors = androidx.compose.material3.ButtonDefaults.buttonColors(
             containerColor = Color(red = 40, green = 84, blue = 100),
             contentColor = Color.White

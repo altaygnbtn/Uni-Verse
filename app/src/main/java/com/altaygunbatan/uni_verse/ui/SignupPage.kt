@@ -92,7 +92,7 @@ fun SignupPage( navController: NavController, onSignupSuccess: () -> Unit) {
                 .wrapContentSize(Alignment.Center)
         ) {
             TextField(
-                modifier = Modifier.size(width = 345.dp, height = 47.dp),
+                modifier = Modifier.size(width = 345.dp, height = 55.dp),
                 value = email,
                 onValueChange = {
                     email = it
@@ -122,7 +122,7 @@ fun SignupPage( navController: NavController, onSignupSuccess: () -> Unit) {
         ){
 
         TextField(
-            modifier = Modifier.size(width = 345.dp, height = 45.dp),
+            modifier = Modifier.size(width = 345.dp, height = 55.dp),
             value =password,
             onValueChange = {
                 password = it
