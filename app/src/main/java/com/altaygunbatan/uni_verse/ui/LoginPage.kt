@@ -190,6 +190,7 @@ fun LoginPage( navController: NavController, onLoginSuccess: () -> Unit) {
                     fontSize = 22.sp)
             }
         }
+
         Spacer(modifier = Modifier.height(20.dp))
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
             TextButton(onClick = {
@@ -214,10 +215,13 @@ fun LoginPage( navController: NavController, onLoginSuccess: () -> Unit) {
                     fontSize = 16.sp,
                     color = Color(red = 40, green = 84, blue = 100),
                     modifier = Modifier.padding(end = 20.dp))
+
             }
         }
     }
 }
+
+
 
 @Preview
 @Composable
