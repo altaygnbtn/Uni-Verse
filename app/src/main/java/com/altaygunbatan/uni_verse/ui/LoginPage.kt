@@ -46,6 +46,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.altaygunbatan.uni_verse.R
 import com.altaygunbatan.uni_verse.ui.theme.backgroundDark
+import com.altaygunbatan.uni_verse.ui.theme.bodyFontFamily
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
 import com.altaygunbatan.uni_verse.viewModels.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -81,7 +82,7 @@ fun LoginPage( navController: NavController, onLoginSuccess: () -> Unit) {
 
         Text(
             text = "E-mail",
-            fontFamily = displayFontFamily,
+            fontFamily = bodyFontFamily,
             fontSize = 22.sp,
             modifier = Modifier.padding(start = 46.dp))
 
@@ -109,7 +110,7 @@ fun LoginPage( navController: NavController, onLoginSuccess: () -> Unit) {
 
         Text(
             text = "Password",
-            fontFamily = displayFontFamily,
+            fontFamily = bodyFontFamily,
             fontSize = 22.sp,
             modifier = Modifier.padding(start = 46.dp)
         )
@@ -203,6 +204,7 @@ fun LoginPage( navController: NavController, onLoginSuccess: () -> Unit) {
                     fontSize = 16.sp,
                     color = Color(red = 40, green = 84, blue = 100),
                     modifier = Modifier.padding(end = 20.dp))
+
             }
         }
         Spacer(modifier = Modifier.height(20.dp))

@@ -1,5 +1,7 @@
 package com.altaygunbatan.uni_verse.ui
 
+import android.provider.CalendarContract.Events
+import android.provider.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -25,6 +27,11 @@ fun AppNavigation(modifier : Modifier = Modifier) {
         composable("home") {
             HomePage(navController = navController)
         }
+
+        composable ("map") {
+            MapPage(navController = navController)
+        }
+
         composable("forgot") {
             ForgotPasswordPage(navController = navController)
         }

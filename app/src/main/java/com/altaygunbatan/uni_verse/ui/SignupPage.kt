@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.altaygunbatan.uni_verse.R
+import com.altaygunbatan.uni_verse.ui.theme.bodyFontFamily
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
 
 
@@ -80,7 +81,7 @@ fun SignupPage( navController: NavController, onSignupSuccess: () -> Unit) {
 
         Text(
             text = "E-mail",
-            fontFamily = displayFontFamily,
+            fontFamily = bodyFontFamily,
             fontSize = 22.sp,
             modifier = Modifier.padding(start = 46.dp))
 
@@ -108,7 +109,7 @@ fun SignupPage( navController: NavController, onSignupSuccess: () -> Unit) {
 
         Text(
             text = "Password",
-            fontFamily = displayFontFamily,
+            fontFamily = bodyFontFamily,
             fontSize = 22.sp,
             modifier = Modifier.padding(start = 46.dp),
 
