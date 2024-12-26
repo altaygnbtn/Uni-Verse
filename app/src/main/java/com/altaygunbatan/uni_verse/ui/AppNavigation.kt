@@ -27,18 +27,11 @@ fun AppNavigation(modifier : Modifier = Modifier) {
         composable("home") {
             HomePage(navController = navController)
         }
-        composable ("chat") {
-            ChatPage(navController = navController)
-        }
+
         composable ("map") {
             MapPage(navController = navController)
         }
-        composable ("notification") {
-            NotificationPage(navController = navController)
-        }
-        composable ("settings") {
-            SettingsPage(navController = navController)
-        }
+
         composable("forgot") {
             ForgotPasswordPage(navController = navController)
         }
