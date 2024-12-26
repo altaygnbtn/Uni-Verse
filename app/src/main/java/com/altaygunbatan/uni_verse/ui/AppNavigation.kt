@@ -30,8 +30,8 @@ fun AppNavigation(modifier : Modifier = Modifier) {
         composable ("chat") {
             ChatPage(navController = navController)
         }
-        composable ("events") {
-            EventsPage(navController = navController, events = emptyList(), onAddEvent = {}, onEditEvent = {}, onDeleteEvent = {})
+        composable ("map") {
+            MapPage(navController = navController)
         }
         composable ("notification") {
             NotificationPage(navController = navController)
