@@ -113,7 +113,7 @@ fun MyButton2(text2:String, navController: NavController){
     Button (modifier = Modifier.size(width = 241.dp, height = 40.dp),
         onClick = { navController.navigate("home") },
         colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-            containerColor = Color(red = 40, green = 84, blue = 100),
+            containerColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
             contentColor = Color.White
         )) {
         Text(text = text2,

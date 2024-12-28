@@ -78,15 +78,16 @@ fun LoginPage( navController: NavController, onLoginSuccess: () -> Unit) {
             modifier = Modifier.padding(start = 32.dp, top = 45.dp,)
         )
 
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(120.dp))
 
         Text(
             text = "E-mail",
             fontFamily = bodyFontFamily,
             fontSize = 22.sp,
+            color = Color(red = 10, green = 16, blue = 69, alpha = 255),
             modifier = Modifier.padding(start = 46.dp))
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -106,16 +107,17 @@ fun LoginPage( navController: NavController, onLoginSuccess: () -> Unit) {
             )
         }
 
-        Spacer(modifier = Modifier.height(95.dp))
+        Spacer(modifier = Modifier.height(50.dp))
 
         Text(
             text = "Password",
             fontFamily = bodyFontFamily,
             fontSize = 22.sp,
+            color = Color(red = 10, green = 16, blue = 69, alpha = 255),
             modifier = Modifier.padding(start = 46.dp)
         )
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -156,7 +158,9 @@ fun LoginPage( navController: NavController, onLoginSuccess: () -> Unit) {
                 onClick = { isSelected = !isSelected },
                 modifier = Modifier.padding(start = 10.dp)
             )
-            Text("Remember me")
+            Text("Remember me",
+                fontFamily = bodyFontFamily,
+                color = Color(red = 10, green = 16, blue = 69, alpha = 255))
         }
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -178,7 +182,7 @@ fun LoginPage( navController: NavController, onLoginSuccess: () -> Unit) {
                     }
                 },
                 colors = androidx.compose.material.ButtonDefaults.buttonColors(
-                    backgroundColor = Color(red = 40, green = 84, blue = 100),
+                    backgroundColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(20.dp),
@@ -192,7 +196,7 @@ fun LoginPage( navController: NavController, onLoginSuccess: () -> Unit) {
             }
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
             TextButton(onClick = {
                 navController.navigate("forgot")
@@ -202,12 +206,12 @@ fun LoginPage( navController: NavController, onLoginSuccess: () -> Unit) {
                 Text(text = "Forgot Password?",
                     fontFamily = displayFontFamily,
                     fontSize = 16.sp,
-                    color = Color(red = 40, green = 84, blue = 100),
+                    color = Color(red = 10, green = 16, blue = 69, alpha = 255),
                     modifier = Modifier.padding(end = 20.dp))
 
             }
         }
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
             TextButton(onClick = {
                 navController.navigate("signup")
@@ -215,7 +219,7 @@ fun LoginPage( navController: NavController, onLoginSuccess: () -> Unit) {
                 Text("Don't have an account?",
                     fontFamily = displayFontFamily,
                     fontSize = 16.sp,
-                    color = Color(red = 40, green = 84, blue = 100),
+                    color = Color(red = 10, green = 16, blue = 69, alpha = 255),
                     modifier = Modifier.padding(end = 20.dp))
 
             }

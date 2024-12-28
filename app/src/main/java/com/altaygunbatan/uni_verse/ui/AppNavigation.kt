@@ -24,16 +24,14 @@ fun AppNavigation(modifier : Modifier = Modifier) {
         composable("signup") {
             SignupPage(navController = navController, onSignupSuccess = {navController.navigate("login")})
         }
+        composable("forgot") {
+            ForgotPasswordPage(navController = navController)
+        }
         composable("home") {
             HomePage(navController = navController)
         }
-
         composable ("map") {
             MapPage(navController = navController)
-        }
-
-        composable("forgot") {
-            ForgotPasswordPage(navController = navController)
         }
 
     }

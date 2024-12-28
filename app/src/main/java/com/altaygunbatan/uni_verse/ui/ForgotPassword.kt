@@ -30,11 +30,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.altaygunbatan.uni_verse.ui.theme.bodyFontFamily
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
 import com.altaygunbatan.uni_verse.viewModels.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -67,16 +69,17 @@ fun ForgotPasswordPage(navController : NavController) {
         ) {
             Text(
                 text = "No problem! Enter the e-mail address associated with your account. We'll send you a secure link to reset your password",
-                fontFamily = displayFontFamily,
+                fontFamily = bodyFontFamily,
                 fontSize = 22.sp,
+                color = Color(red = 10, green = 16, blue = 69, alpha = 255),
                 modifier = Modifier.padding(start = 10.dp)
             )
         }
-        Spacer(modifier = Modifier.height(200.dp))
+        Spacer(modifier = Modifier.height(100.dp))
 
         Text(
             text = "Register E-Mail",
-            fontFamily = displayFontFamily,
+            fontFamily = bodyFontFamily,
             fontSize = 22.sp,
             modifier = Modifier.padding(start = 30.dp)
         )
@@ -121,14 +124,15 @@ fun ForgotPasswordPage(navController : NavController) {
                     }
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(red = 40, green = 84, blue = 100),
-                    contentColor = Color.White
+                    containerColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
+
                 ),
                 shape = RoundedCornerShape(20.dp),
                 modifier = Modifier.size(width = 345.dp, height = 45.dp)
             ) {
                 Text(
                     text = "SEND LINK",
+                    color = Color.White,
                     fontFamily = displayFontFamily,
                     fontSize = 22.sp
                 )
@@ -136,7 +140,7 @@ fun ForgotPasswordPage(navController : NavController) {
 
         }
 
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(180.dp))
 
         TextButton(
             onClick = {
@@ -148,7 +152,7 @@ fun ForgotPasswordPage(navController : NavController) {
                 text = "Back",
                 fontFamily = displayFontFamily,
                 fontSize = 15.sp,
-                color = Color(red = 40, green = 84, blue = 100)
+                color = Color(red = 10, green = 16, blue = 69, alpha = 255)
             )
         }
 

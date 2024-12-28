@@ -73,11 +73,12 @@ fun SignupPage( navController: NavController, onSignupSuccess: () -> Unit) {
         Text(
             text = "SIGN UP",
             fontFamily = displayFontFamily,
+            color = Color(red = 10, green = 16, blue = 69, alpha = 255),
             fontSize = 32.sp,
             modifier = Modifier.padding(start = 32.dp, top = 45.dp)
         )
 
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(120.dp))
 
         Text(
             text = "E-mail",
@@ -85,7 +86,7 @@ fun SignupPage( navController: NavController, onSignupSuccess: () -> Unit) {
             fontSize = 22.sp,
             modifier = Modifier.padding(start = 46.dp))
 
-        Spacer(modifier = Modifier.height(42.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Box(
             modifier = Modifier
@@ -105,7 +106,7 @@ fun SignupPage( navController: NavController, onSignupSuccess: () -> Unit) {
                 shape = RoundedCornerShape(20.dp)
             )
         }
-        Spacer(modifier = Modifier.height(95.dp))
+        Spacer(modifier = Modifier.height(50.dp))
 
         Text(
             text = "Password",
@@ -114,7 +115,7 @@ fun SignupPage( navController: NavController, onSignupSuccess: () -> Unit) {
             modifier = Modifier.padding(start = 46.dp),
 
         )
-        Spacer(modifier = Modifier.height(42.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Box(
             modifier = Modifier
@@ -150,7 +151,7 @@ fun SignupPage( navController: NavController, onSignupSuccess: () -> Unit) {
         )
 }
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(60.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -167,7 +168,7 @@ fun SignupPage( navController: NavController, onSignupSuccess: () -> Unit) {
                     }
                 },
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color(red = 40, green = 84, blue = 100),
+                    backgroundColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(20.dp),
@@ -206,7 +207,7 @@ fun SignupPage( navController: NavController, onSignupSuccess: () -> Unit) {
             Text(text = "Back",
                 fontFamily = displayFontFamily,
                 fontSize = 15.sp,
-                color = Color(red = 40, green = 84, blue = 100))
+                color = Color(red = 10, green = 16, blue = 69, alpha = 255))
         }
     }
 
