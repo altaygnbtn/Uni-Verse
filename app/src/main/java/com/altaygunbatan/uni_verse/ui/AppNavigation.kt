@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.altaygunbatan.uni_verse.database.EventState
 import com.altaygunbatan.uni_verse.viewModels.AuthViewModel
 
 
@@ -14,6 +15,8 @@ import com.altaygunbatan.uni_verse.viewModels.AuthViewModel
 fun AppNavigation(modifier : Modifier = Modifier) {
 
     val navController = rememberNavController()
+
+
 
     NavHost(navController = navController, startDestination = "login"){
 
@@ -28,10 +31,13 @@ fun AppNavigation(modifier : Modifier = Modifier) {
             ForgotPasswordPage(navController = navController)
         }
         composable("home") {
-            HomePage(navController = navController)
+            HomePage(navController = navController, state = EventState(), onEvent = {})
         }
         composable ("map") {
-            MapPage(navController = navController)
+            MapPage(navController = navController, state = EventState())
+        }
+        composable ("event_create") {
+            CreateEventPage(navController = navController, state = EventState(), onEvent = {})
         }
 
     }

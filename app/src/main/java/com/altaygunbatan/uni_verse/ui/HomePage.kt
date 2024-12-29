@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 
@@ -57,6 +58,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.altaygunbatan.uni_verse.R
+import com.altaygunbatan.uni_verse.database.EventActions
+import com.altaygunbatan.uni_verse.database.EventState
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
 import com.altaygunbatan.uni_verse.viewModels.AuthViewModel
 
@@ -64,9 +67,11 @@ import com.altaygunbatan.uni_verse.viewModels.AuthViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun HomePage( navController: NavController) {
+fun HomePage(navController: NavController,
+             state: EventState,
+             onEvent: (EventActions) -> Unit) {
 
-    val context = LocalContext.current.applicationContext
+
     val selected = remember {
         mutableStateOf(R.drawable.home_button)
     }
@@ -79,7 +84,7 @@ fun HomePage( navController: NavController) {
             MyTopAppBar(navController,selected)
         },
         bottomBar = {
-                MyBottomAppBar(navController, selected)
+                MyBottomAppBar(navController, selected, state)
         }
 
     ) { innerPadding ->
@@ -108,6 +113,19 @@ fun HomePage( navController: NavController) {
                 fontSize = 20.sp,
                 style = TextStyle(fontWeight = FontWeight.Bold),
                 modifier = Modifier.padding(start = 30.dp))
+
+            LazyColumn(
+                contentPadding = innerPadding,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+
+            ) {
+                items(state.events.size) { index ->
+                    EventItem(state = state, index = index, onEvent = onEvent)
+                }
+            }
         }
 
     }
@@ -119,6 +137,6 @@ fun HomePage( navController: NavController) {
 @Preview
 @Composable
 fun PreviewHomePage() {
-    HomePage(navController = rememberNavController())
+    HomePage(navController = rememberNavController(), state = EventState(), onEvent = {})
 }
 
