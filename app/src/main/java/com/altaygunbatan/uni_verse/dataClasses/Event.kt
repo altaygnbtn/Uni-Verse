@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-@Entity
+@Entity(tableName = "events")
 data class Event(
 
     @PrimaryKey(autoGenerate = true)
@@ -12,6 +12,7 @@ data class Event(
 
     val name: String,
     val date: String,
-    val details: String
+    val details: String,
+    val imageUri: String? = null
 
 )

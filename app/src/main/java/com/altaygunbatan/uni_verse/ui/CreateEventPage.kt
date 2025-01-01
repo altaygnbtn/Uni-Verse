@@ -44,8 +44,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.altaygunbatan.uni_verse.R
-import com.altaygunbatan.uni_verse.database.EventActions
-import com.altaygunbatan.uni_verse.database.EventState
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
 
 @OptIn(ExperimentalMaterial3Api::class)

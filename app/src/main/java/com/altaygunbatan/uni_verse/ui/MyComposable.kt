@@ -70,8 +70,6 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.altaygunbatan.uni_verse.R
 import com.altaygunbatan.uni_verse.dataClasses.Event
-import com.altaygunbatan.uni_verse.database.EventActions
-import com.altaygunbatan.uni_verse.database.EventState
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
 import com.altaygunbatan.uni_verse.ui.theme.primaryContainerLight
 import com.altaygunbatan.uni_verse.ui.theme.primaryLight

@@ -5,9 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.altaygunbatan.uni_verse.dataClasses.Event
-import com.altaygunbatan.uni_verse.database.EventActions
 import com.altaygunbatan.uni_verse.database.EventDao
-import com.altaygunbatan.uni_verse.database.EventState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update

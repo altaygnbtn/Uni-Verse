@@ -24,7 +24,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.altaygunbatan.uni_verse.database.EventDatabase
-import com.altaygunbatan.uni_verse.database.EventState
 import com.altaygunbatan.uni_verse.ui.AppNavigation
 import com.altaygunbatan.uni_verse.ui.CreateEventPage
 import com.altaygunbatan.uni_verse.ui.ForgotPasswordPage
