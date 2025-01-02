@@ -1,12 +1,17 @@
-@file:Suppress("UNREACHABLE_CODE")
+
 
 package com.altaygunbatan.uni_verse.ui
 
+import android.app.Application
+import android.app.DatePickerDialog
 import android.graphics.drawable.Icon
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +23,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -44,15 +50,36 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.altaygunbatan.uni_verse.R
+import com.altaygunbatan.uni_verse.dataClasses.Event
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
+import com.altaygunbatan.uni_verse.viewModels.EventViewModel
+import java.util.Calendar
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateEventPage(
     navController: NavController,
-    state: EventState,
-    onEvent: (EventActions) -> Unit) {
+    viewModel: EventViewModel) {
 
+    var name by remember { mutableStateOf("") }
+    var details by remember { mutableStateOf("") }
+    var date by remember { mutableStateOf("") }
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val context = LocalContext.current
+
+
+    // DatePickerDialog
+    val calendar = Calendar.getInstance()
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _, year, month, dayOfMonth ->
+            date = "$dayOfMonth/${month + 1}/$year" // Format the date
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
 
     val selected = remember {
         mutableStateOf(R.drawable.baseline_add_24)
@@ -65,7 +92,7 @@ fun CreateEventPage(
             MyTopAppBar(navController,selected)
         },
         bottomBar = {
-            MyBottomAppBar(navController, selected, state)
+            MyBottomAppBar(navController, selected)
         }
 
     ){ paddingValues ->
@@ -104,8 +131,8 @@ fun CreateEventPage(
                     containerColor = Color.White
                 ),
                 shape = RoundedCornerShape(20.dp),
-                value = state.name.value,
-                onValueChange = { state.name.value = it },
+                value = name,
+                onValueChange = { name = it},
                 placeholder = {
                     Text(text = "Event Name",
                         color = Color(red = 10, green = 16, blue = 69, alpha = 255),
@@ -122,14 +149,19 @@ fun CreateEventPage(
                     containerColor = Color.White
                 ),
                 shape = RoundedCornerShape(20.dp),
-                value = state.date.value,
-                onValueChange = { state.date.value = it },
+                value = date,
+                onValueChange = { date = it },
                 placeholder = {
                     Text(text = "Event Date",
                         color = Color(red = 10, green = 16, blue = 69, alpha = 255),
                         fontWeight = FontWeight.SemiBold)
                 },
+                enabled = false
             )
+                IconButton(onClick = { datePickerDialog.show() }) {
+                    Icon(painter = painterResource(id = R.drawable.fe_calendar),contentDescription = "Select Date")
+                }
+
 
             TextField(modifier = Modifier
                 .fillMaxWidth()
@@ -140,8 +172,8 @@ fun CreateEventPage(
                     containerColor = Color.White
                 ),
                 shape = RoundedCornerShape(20.dp),
-                value = state.details.value,
-                onValueChange = { state.details.value = it },
+                value = details ,
+                onValueChange = { details = it },
                 placeholder = {
                     Text(text = "Event Details",
                         color = Color(red = 10, green = 16, blue = 69, alpha = 255),
@@ -154,12 +186,14 @@ fun CreateEventPage(
                     .wrapContentSize(Alignment.Center)
             ){
             Button(onClick = {
-                onEvent(EventActions.SaveEvents(
-                    name = state.name.value,
-                    date = state.date.value,
-                    details = state.details.value,
-
-                ))
+                val event = Event(
+                    name = name,
+                    details = details,
+                    date = date,
+                    imageUri = imageUri?.toString() // Save URI as a string
+                )
+                viewModel.addEvent(event)
+                navController.navigate("home")
 
             },
                 colors = ButtonDefaults.buttonColors(
@@ -185,6 +219,7 @@ fun CreateEventPage(
 @Preview
 @Composable
 fun CreateEventPageReview(modifier: Modifier = Modifier) {
-    CreateEventPage(navController = rememberNavController(), state = EventState(), onEvent = {})
+
+    CreateEventPage(navController = rememberNavController(), viewModel = EventViewModel(application = Application()))
 
 }

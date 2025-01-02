@@ -241,8 +241,7 @@ fun MyTopAppBar(navController: NavController, selected: MutableState<Int>) {
     }
 
 @Composable
-fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>,
-                   state: EventState
+fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
                    ) {
     BottomAppBar(
         modifier = Modifier.clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)),
@@ -289,9 +288,7 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>,
             contentAlignment = Alignment.Center
         ) {
             FloatingActionButton(
-                onClick = {state.name.value = ""
-                    state.date.value = ""
-                    state.details.value = ""
+                onClick = {
                     navController.navigate("event_create") },
                 containerColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
                 contentColor = Color.Red
@@ -346,81 +343,63 @@ fun ImageUploadCard() {
     val context = LocalContext.current
 
     // Launcher to pick an image
-    val imagePickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         imageUri = uri
     }
 
     Card(
         modifier = Modifier
-            .size(225.dp)
+            .size(150.dp)
             .clickable {
                 // Trigger the image picker when the card is clicked
-                imagePickerLauncher.launch("image/*")
+                launcher.launch("image/*")
             },
         shape = RoundedCornerShape(16.dp),
         elevation = 4.dp
     ) {
-        if (imageUri != null) {
-            // Display the selected image
+        imageUri?.let {
             Image(
-                painter = rememberAsyncImagePainter(imageUri),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
+                painter = rememberAsyncImagePainter(model = it),
+                contentDescription = "Event Image",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .padding(top = 16.dp)
             )
-        } else {
-            // Placeholder for when no image is selected
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                Text("Click to upload an event image", textAlign = TextAlign.Center)
-            }
+        }
         }
     }
-}
+
 
 @Composable
-fun EventItem(
-    state: EventState,
-    index: Int,
-    onEvent: (EventActions) -> Unit
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
-            .background(MaterialTheme.colorScheme.primaryContainer)
-            .padding(12.dp)
+fun EventCard(event: Event, onDelete: () -> Unit) {
+    Card(
+        modifier = Modifier.size(200.dp),
+        elevation = 4.dp
     ) {
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            Text(text = state.events[index].name,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onPrimaryContainer)
+        Box {
+            event.imageUri?.let { uri ->
+                Image(
+                    painter = rememberAsyncImagePainter(model = uri),
+                    contentDescription = "Event Background",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
+            Column(
+                modifier = Modifier.padding(16.dp).
+                background(Color.Black.copy(alpha = 0.6f)),
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(text = state.events[index].date,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onPrimaryContainer)
-
-            Text(text = state.events[index].details,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onPrimaryContainer)
-        }
-
-        IconButton(onClick = { onEvent(EventActions.DeleteEvents(state.events[index])
-        )
-        }
-        ) {
-            Icon(imageVector = Icons.Rounded.Delete,
-                contentDescription = "Delete Note",
-                tint = MaterialTheme.colorScheme.error,
-                modifier = Modifier.size(35.dp))
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(text = event.name, style = MaterialTheme.typography.headlineMedium, color = Color.White)
+                Text(text = event.details, style = MaterialTheme.typography.bodyMedium, color = Color.White)
+                Text(text = "Date: ${event.date}", style = MaterialTheme.typography.bodySmall, color = Color.White)
+                IconButton(onClick = onDelete, modifier = Modifier.align(Alignment.End)) {
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = "delete button")
+                }
+            }
 
         }
     }

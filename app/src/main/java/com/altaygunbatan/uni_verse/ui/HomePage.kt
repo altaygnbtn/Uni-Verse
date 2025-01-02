@@ -1,5 +1,6 @@
 package com.altaygunbatan.uni_verse.ui
 
+import android.app.Application
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 
 import androidx.compose.material.icons.Icons
@@ -36,6 +38,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -50,6 +53,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,15 +64,16 @@ import androidx.navigation.compose.rememberNavController
 import com.altaygunbatan.uni_verse.R
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
 import com.altaygunbatan.uni_verse.viewModels.AuthViewModel
+import com.altaygunbatan.uni_verse.viewModels.EventViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun HomePage(navController: NavController,
-             state: EventState,
-             onEvent: (EventActions) -> Unit) {
+fun HomePage(navController: NavController, viewModel : EventViewModel) {
 
+    val events by viewModel.events.collectAsState(initial = emptyList())
+    val context = LocalContext.current.applicationContext
 
     val selected = remember {
         mutableStateOf(R.drawable.home_button)
@@ -82,7 +87,7 @@ fun HomePage(navController: NavController,
             MyTopAppBar(navController,selected)
         },
         bottomBar = {
-                MyBottomAppBar(navController, selected, state)
+                MyBottomAppBar(navController, selected)
         }
 
     ) { innerPadding ->
@@ -106,35 +111,47 @@ fun HomePage(navController: NavController,
             }
             Spacer(modifier = Modifier.height(20.dp))
 
-            Text( text = "My Events",
+            Text(
+                text = "My Events",
                 fontFamily = displayFontFamily,
                 fontSize = 20.sp,
                 style = TextStyle(fontWeight = FontWeight.Bold),
-                modifier = Modifier.padding(start = 30.dp))
+                modifier = Modifier.padding(start = 30.dp)
+            )
 
-            LazyColumn(
-                contentPadding = innerPadding,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-
-            ) {
-                items(state.events.size) { index ->
-                    EventItem(state = state, index = index, onEvent = onEvent)
+            if (events.isEmpty()) {
+                Text(
+                    text = "No events available",
+                    modifier = Modifier.fillMaxSize(),
+                    textAlign = TextAlign.Center
+                )
+            } else {
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(events) { event ->
+                        EventCard(event, onDelete = { viewModel.deleteEvent(event) })
+                    }
                 }
+
+
             }
+
         }
-
     }
-
 }
-
-
 
 @Preview
 @Composable
-fun PreviewHomePage() {
-    HomePage(navController = rememberNavController(), state = EventState(), onEvent = {})
+fun HomePagePreview(modifier: Modifier = Modifier) {
+
+    HomePage(navController = rememberNavController(), viewModel = EventViewModel(Application()))
+
 }
+
+
+
 
