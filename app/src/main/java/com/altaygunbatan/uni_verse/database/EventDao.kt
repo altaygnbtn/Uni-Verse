@@ -14,6 +14,7 @@ interface EventDao {
 
     @Query("SELECT * FROM events")
     fun getAllEvents(): Flow<List<Event>>
+
     @Insert
     suspend fun insertEvent(event: Event)       //import the events
 
