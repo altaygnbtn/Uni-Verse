@@ -375,7 +375,7 @@ fun ImageUploadCard() {
 @Composable
 fun EventCard(event: Event, onDelete: () -> Unit) {
     Card(
-        modifier = Modifier.size(200.dp),
+        modifier = Modifier.size(300.dp),
         elevation = 4.dp
     ) {
         Box {

@@ -7,7 +7,10 @@ import android.app.DatePickerDialog
 import android.graphics.drawable.Icon
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,8 +20,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -49,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
 import com.altaygunbatan.uni_verse.R
 import com.altaygunbatan.uni_verse.dataClasses.Event
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
@@ -67,7 +73,9 @@ fun CreateEventPage(
     var date by remember { mutableStateOf("") }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
-
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        imageUri = uri
+    }
 
     // DatePickerDialog
     val calendar = Calendar.getInstance()
@@ -85,24 +93,26 @@ fun CreateEventPage(
         mutableStateOf(R.drawable.baseline_add_24)
     }
 
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior =
+        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
-    Scaffold( modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    Scaffold(modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            MyTopAppBar(navController,selected)
+            MyTopAppBar(navController, selected)
         },
         bottomBar = {
             MyBottomAppBar(navController, selected)
         }
 
-    ){ paddingValues ->
+    ) { paddingValues ->
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .background(color = Color(red = 255, green = 250, blue = 241)),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             Text(
@@ -112,19 +122,41 @@ fun CreateEventPage(
                 color = Color(red = 10, green = 16, blue = 69, alpha = 255),
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 30.dp)
-                )
+            )
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentSize(Alignment.Center)
             ) {
-                ImageUploadCard()
+
+
+                Card(
+                    modifier = Modifier
+                        .size(150.dp)
+                        .clickable {
+                            // Trigger the image picker when the card is clicked
+                            launcher.launch("image/*")
+                        },
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = 4.dp
+                ) {
+                    imageUri?.let {
+                        Image(
+                            painter = rememberAsyncImagePainter(model = it),
+                            contentDescription = "Event Image",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(150.dp)
+                                .padding(top = 16.dp)
+                        )
+                    }
+                }
             }
 
-            TextField(modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            TextField(
+                modifier = Modifier
+                    .padding(16.dp),
                 colors = TextFieldDefaults.textFieldColors(
                     unfocusedIndicatorColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
@@ -132,87 +164,104 @@ fun CreateEventPage(
                 ),
                 shape = RoundedCornerShape(20.dp),
                 value = name,
-                onValueChange = { name = it},
+                onValueChange = { name = it },
                 placeholder = {
-                    Text(text = "Event Name",
+                    Text(
+                        text = "Event Name",
                         color = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                        fontWeight = FontWeight.SemiBold)
+                        fontWeight = FontWeight.SemiBold
+                    )
                 },
             )
-
-            TextField(modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    containerColor = Color.White
-                ),
-                shape = RoundedCornerShape(20.dp),
-                value = date,
-                onValueChange = { date = it },
-                placeholder = {
-                    Text(text = "Event Date",
-                        color = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                        fontWeight = FontWeight.SemiBold)
-                },
-                enabled = false
-            )
+            Row(
+                horizontalArrangement = Arrangement.Center
+            ) {
+                TextField(
+                    modifier = Modifier
+                        .padding(16.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                        unfocusedIndicatorColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        containerColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(20.dp),
+                    value = date,
+                    onValueChange = { date = it },
+                    placeholder = {
+                        Text(
+                            text = "Event Date",
+                            color = Color(red = 10, green = 16, blue = 69, alpha = 255),
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    },
+                    enabled = false
+                )
                 IconButton(onClick = { datePickerDialog.show() }) {
-                    Icon(painter = painterResource(id = R.drawable.fe_calendar),contentDescription = "Select Date")
+                    Icon(
+                        modifier = Modifier.size(30.dp),
+                        painter = painterResource(id = R.drawable.fe_calendar),
+                        contentDescription = "Select Date"
+                    )
                 }
+            }
 
-
-            TextField(modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            TextField(
+                modifier = Modifier
+                    .padding(16.dp),
                 colors = TextFieldDefaults.textFieldColors(
                     unfocusedIndicatorColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     containerColor = Color.White
                 ),
                 shape = RoundedCornerShape(20.dp),
-                value = details ,
+                value = details,
                 onValueChange = { details = it },
                 placeholder = {
-                    Text(text = "Event Details",
+                    Text(
+                        text = "Event Details",
                         color = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                        fontWeight = FontWeight.SemiBold)
+                        fontWeight = FontWeight.SemiBold
+                    )
                 },
             )
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentSize(Alignment.Center)
-            ){
-            Button(onClick = {
-                val event = Event(
-                    name = name,
-                    details = details,
-                    date = date,
-                    imageUri = imageUri?.toString() // Save URI as a string
-                )
-                viewModel.addEvent(event)
-                navController.navigate("home")
+            ) {
+                Button(
+                    onClick = {
+                        val event = Event(
+                            name = name,
+                            details = details,
+                            date = date,
+                            imageUri = imageUri?.toString() // Save URI as a string
+                        )
+                        viewModel.addEvent(event)
+                        navController.navigate("home")
 
-            },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(red = 255, green = 60, blue = 49, alpha = 255))
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(red = 255, green = 60, blue = 49, alpha = 255)
+                    )
                 ) {
-                Text(text = "Create",
-                    fontFamily = displayFontFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 25.sp)
-            }
+                    Text(
+                        text = "Create",
+                        fontFamily = displayFontFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 25.sp
+                    )
+                }
             }
 
         }
     }
 
 
-
-
 }
+
+
+
 
 
 
