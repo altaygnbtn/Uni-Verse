@@ -1,36 +1,42 @@
 package com.altaygunbatan.uni_verse.ui
 
-import android.content.Context
-import android.graphics.drawable.shapes.Shape
+import android.net.Uri
+
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
+
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
+
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Card
+
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ColorScheme
+
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
+
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
@@ -45,23 +51,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
+
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
+
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+
+import coil.compose.rememberAsyncImagePainter
 import com.altaygunbatan.uni_verse.R
 import com.altaygunbatan.uni_verse.dataClasses.Event
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
-import com.altaygunbatan.uni_verse.ui.theme.primaryContainerLight
-import com.altaygunbatan.uni_verse.ui.theme.primaryLight
-import com.altaygunbatan.uni_verse.viewModels.EventViewModel
+
 import com.google.firebase.auth.FirebaseAuth
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 
 @Composable
@@ -113,7 +118,7 @@ fun MyButton2(text2:String, navController: NavController){
     Button (modifier = Modifier.size(width = 241.dp, height = 40.dp),
         onClick = { navController.navigate("home") },
         colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-            containerColor = Color(red = 40, green = 84, blue = 100),
+            containerColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
             contentColor = Color.White
         )) {
         Text(text = text2,
@@ -225,7 +230,8 @@ fun MyTopAppBar(navController: NavController, selected: MutableState<Int>) {
     }
 
 @Composable
-fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>) {
+fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
+                   ) {
     BottomAppBar(
         modifier = Modifier.clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)),
                 containerColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
@@ -271,7 +277,8 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>) {
             contentAlignment = Alignment.Center
         ) {
             FloatingActionButton(
-                onClick = { navController.navigate("events") },
+                onClick = {
+                    navController.navigate("event_create") },
                 containerColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
                 contentColor = Color.Red
             ) {
@@ -319,5 +326,70 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>) {
 }
 
 
+@Composable
+fun ImageUploadCard() {
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val context = LocalContext.current
+
+    // Launcher to pick an image
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        imageUri = uri
+    }
+
+    Card(
+        modifier = Modifier
+            .size(150.dp)
+            .clickable {
+                // Trigger the image picker when the card is clicked
+                launcher.launch("image/*")
+            },
+        shape = RoundedCornerShape(16.dp),
+        elevation = 4.dp
+    ) {
+        imageUri?.let {
+            Image(
+                painter = rememberAsyncImagePainter(model = it),
+                contentDescription = "Event Image",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .padding(top = 16.dp)
+            )
+        }
+        }
+    }
 
 
+@Composable
+fun EventCard(event: Event, onDelete: () -> Unit) {
+    Card(
+        modifier = Modifier.size(300.dp),
+        elevation = 4.dp
+    ) {
+        Box {
+            event.imageUri?.let { uri ->
+                Image(
+                    painter = rememberAsyncImagePainter(model = uri),
+                    contentDescription = "Event Background",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
+            Column(
+                modifier = Modifier.padding(16.dp).
+                background(Color.Black.copy(alpha = 0.6f)),
+
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(text = event.name, style = MaterialTheme.typography.headlineMedium, color = Color.White)
+                Text(text = event.details, style = MaterialTheme.typography.bodyMedium, color = Color.White)
+                Text(text = "Date: ${event.date}", style = MaterialTheme.typography.bodySmall, color = Color.White)
+                IconButton(onClick = onDelete, modifier = Modifier.align(Alignment.End)) {
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = "delete button")
+                }
+            }
+
+        }
+    }
+}

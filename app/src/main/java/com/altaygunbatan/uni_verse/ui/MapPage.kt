@@ -48,7 +48,8 @@ import com.altaygunbatan.uni_verse.viewModels.EventViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MapPage(navController: NavController) {
+fun MapPage(navController: NavController,
+) {
 
     val context = LocalContext.current.applicationContext
     val selected = remember {
@@ -95,11 +96,5 @@ fun MapPage(navController: NavController) {
 
 
 
-
-@Preview
-@Composable
-fun PreviewMapPage() {
-    MapPage(navController = rememberNavController())
-}
 
 
