@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 //    alias(libs.plugins.google.gms.google.services)
     id("com.google.gms.google-services")
+    id("com.google.devtools.ksp")
 
 }
 
@@ -68,10 +69,43 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    //Android Room Database Dependencies
+    val room_version = "2.6.1"
+
+    implementation("androidx.room:room-runtime:$room_version")
+
+    // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
+    // See Add the KSP plugin to your project
+    ksp("androidx.room:room-compiler:$room_version")
+
+    // If this project only uses Java source, use the Java annotationProcessor
+    // No additional plugins are necessary
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
+
+    // optional - RxJava2 support for Room
+    implementation("androidx.room:room-rxjava2:$room_version")
+
+    // optional - RxJava3 support for Room
+    implementation("androidx.room:room-rxjava3:$room_version")
+
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation("androidx.room:room-guava:$room_version")
+
+    // optional - Test helpers
+    testImplementation("androidx.room:room-testing:$room_version")
+
+    // optional - Paging 3 Integration
+    implementation("androidx.room:room-paging:$room_version")
 
 
+    //navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
+    //coil dependency for image uploading
+    implementation("io.coil-kt:coil-compose:2.2.2")
 
 
     implementation ("androidx.compose.ui:ui:1.5.1")

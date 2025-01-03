@@ -8,10 +8,10 @@
       <SelectionState runConfigName="PreviewLoginPage">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="MainActivity">
+      <SelectionState runConfigName="PreviewHomePage">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="PreviewHomePage">
+      <SelectionState runConfigName="CreateEventPageReview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
