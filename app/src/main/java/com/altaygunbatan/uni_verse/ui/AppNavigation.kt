@@ -1,14 +1,11 @@
 package com.altaygunbatan.uni_verse.ui
 
-import android.provider.CalendarContract.Events
-import android.provider.Settings
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.altaygunbatan.uni_verse.dataClasses.Event
-import com.altaygunbatan.uni_verse.viewModels.AuthViewModel
+
 import com.altaygunbatan.uni_verse.viewModels.EventViewModel
 
 

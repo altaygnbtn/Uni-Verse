@@ -4,7 +4,6 @@ package com.altaygunbatan.uni_verse.ui
 
 import android.app.Application
 import android.app.DatePickerDialog
-import android.graphics.drawable.Icon
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,7 +14,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,6 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Card
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -32,12 +32,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -45,9 +45,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -90,7 +90,7 @@ fun CreateEventPage(
     )
 
     val selected = remember {
-        mutableStateOf(R.drawable.baseline_add_24)
+        mutableIntStateOf(R.drawable.baseline_add_24)
     }
 
     val scrollBehavior =
@@ -112,7 +112,6 @@ fun CreateEventPage(
                 .padding(paddingValues)
                 .background(color = Color(red = 255, green = 250, blue = 241)),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             Text(
@@ -133,13 +132,15 @@ fun CreateEventPage(
 
                 Card(
                     modifier = Modifier
-                        .size(150.dp)
+                        .size(200.dp)
+                        .fillMaxWidth()
+                        .aspectRatio(1f)
                         .clickable {
                             // Trigger the image picker when the card is clicked
                             launcher.launch("image/*")
                         },
                     shape = RoundedCornerShape(16.dp),
-                    elevation = 4.dp
+                    elevation = 4.dp,
                 ) {
                     imageUri?.let {
                         Image(
@@ -148,7 +149,8 @@ fun CreateEventPage(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(150.dp)
-                                .padding(top = 16.dp)
+                                .padding(top = 16.dp),
+                            contentScale = ContentScale.Crop
                         )
                     }
                 }
@@ -174,7 +176,8 @@ fun CreateEventPage(
                 },
             )
             Row(
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 TextField(
                     modifier = Modifier
