@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
 
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
@@ -36,6 +37,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -58,6 +60,7 @@ import androidx.compose.ui.res.painterResource
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 
 import androidx.navigation.NavController
 
@@ -231,13 +234,13 @@ fun MyTopAppBar(navController: NavController, selected: MutableState<Int>) {
 
 @Composable
 fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
-                   ) {
+) {
     var showPopup by remember { mutableStateOf(false) }
 
     BottomAppBar(
         modifier = Modifier.clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)),
-                containerColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                contentColor = Color.White
+        containerColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
+        contentColor = Color.White
     ) {
 
         IconButton(
@@ -245,8 +248,8 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
                 selected.value = R.drawable.home_button // change it to png
                 navController.navigate("home")
             },
-                modifier = Modifier.weight(1f)
-            ) {
+            modifier = Modifier.weight(1f)
+        ) {
 
             Icon(
                 painter = painterResource(id = R.drawable.home_button),
@@ -261,8 +264,8 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
                 selected.value = R.drawable.map_button
                 navController.navigate("map") //change to map
             },
-                modifier = Modifier.weight(1f)
-            ) {
+            modifier = Modifier.weight(1f)
+        ) {
 
             Icon(
                 painter = painterResource(id = R.drawable.map_button),
@@ -280,7 +283,8 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
         ) {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate("event_create") },
+//                    navController.navigate("event_create")
+                    showPopup = true           },
                 containerColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
                 contentColor = Color.Red
             ) {
@@ -290,14 +294,60 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
                 )
             }
         }
-
+        if (showPopup) {
+            Dialog(onDismissRequest = { showPopup = false }) {
+                Surface(
+                    shape = MaterialTheme.shapes.medium,
+                    tonalElevation = 8.dp,
+                    color = Color(red = 10, green = 16, blue = 69, alpha = 255)
+                ) {
+                    Column(
+                        Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "Please select a page to go",
+                            style = MaterialTheme.typography.headlineSmall,
+                            modifier = Modifier.padding(bottom = 8.dp),
+                            color = Color.White
+                        )
+                        Divider()
+                        Text(
+                            text = "Create Event",
+                            color = Color.White,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                                .clickable {
+                                    showPopup = false
+                                    navController.navigate("event_create")
+                                },
+                            fontSize = 18.sp
+                        )
+                        Text(
+                            text = "Join Event",
+                            color = Color.White,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                                .clickable {
+                                    showPopup = false
+                                    navController.navigate("event_join")
+                                },
+                            fontSize = 18.sp
+                        )
+                    }
+                }
+            }
+        }
         IconButton(
             onClick = {
                 selected.value = R.drawable.chat_button
                 navController.navigate("chat")
             },
             modifier = Modifier.weight(1f)
-            ) {
+        ) {
 
             Icon(
                 painter = painterResource(id = R.drawable.chat_button),
@@ -315,7 +365,7 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
                 navController.navigate("settings")
             },
             modifier = Modifier.weight(1f)
-            ) {
+        ) {
 
             Icon(
                 painter = painterResource(id = R.drawable.settings_button),
