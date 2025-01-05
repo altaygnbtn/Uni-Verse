@@ -232,6 +232,8 @@ fun MyTopAppBar(navController: NavController, selected: MutableState<Int>) {
 @Composable
 fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
                    ) {
+    var showPopup by remember { mutableStateOf(false) }
+
     BottomAppBar(
         modifier = Modifier.clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)),
                 containerColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
