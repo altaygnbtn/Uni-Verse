@@ -420,7 +420,7 @@ fun EventCard(event: Event, onDelete: () -> Unit) {
         elevation = 4.dp
     ) {
         Box {
-            event.imageUri?.let { uri ->
+            event.eventImage?.let { uri ->
                 Image(
                     painter = rememberAsyncImagePainter(model = uri),
                     contentDescription = "Event Background",
@@ -434,9 +434,9 @@ fun EventCard(event: Event, onDelete: () -> Unit) {
 
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = event.name, style = MaterialTheme.typography.headlineMedium, color = Color.White)
-                Text(text = event.details, style = MaterialTheme.typography.bodyMedium, color = Color.White)
-                Text(text = "Date: ${event.date}", style = MaterialTheme.typography.bodySmall, color = Color.White)
+                Text(text = event.eventName, style = MaterialTheme.typography.headlineMedium, color = Color.White)
+                Text(text = event.eventDetails, style = MaterialTheme.typography.bodyMedium, color = Color.White)
+                Text(text = "Date: ${event.eventDate}", style = MaterialTheme.typography.bodySmall, color = Color.White)
                 IconButton(onClick = onDelete, modifier = Modifier.align(Alignment.End)) {
                     Icon(imageVector = Icons.Default.Delete, contentDescription = "delete button")
                 }

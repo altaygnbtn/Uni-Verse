@@ -8,11 +8,11 @@ import androidx.room.PrimaryKey
 data class Event(
 
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val eventId: Int = 0,
 
-    val name: String,
-    val date: String,
-    val details: String,
-    val imageUri: String? = null
+    val eventName: String,
+    val eventDate: String,
+    val eventDetails: String,
+    val eventImage: String? = null
 
 )
