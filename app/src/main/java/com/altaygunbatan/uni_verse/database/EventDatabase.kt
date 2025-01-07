@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.altaygunbatan.uni_verse.dataClasses.Event
 
 
-@Database(entities = [Event::class], version = 2)
+@Database(entities = [Event::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun eventDao(): EventDao
 

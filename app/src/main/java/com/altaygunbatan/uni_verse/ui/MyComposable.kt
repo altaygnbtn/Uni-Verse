@@ -1,9 +1,12 @@
 package com.altaygunbatan.uni_verse.ui
 
 import android.net.Uri
+import android.os.Build
+import android.widget.Toast
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,19 +14,28 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 
+
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
 
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
 
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -36,6 +48,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -55,18 +68,23 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 
 import androidx.navigation.NavController
 
 import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.altaygunbatan.uni_verse.R
 import com.altaygunbatan.uni_verse.dataClasses.Event
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
+import com.altaygunbatan.uni_verse.viewModels.EventViewModel
 
 import com.google.firebase.auth.FirebaseAuth
+import java.time.LocalDate
 
 
 @Composable
@@ -231,11 +249,13 @@ fun MyTopAppBar(navController: NavController, selected: MutableState<Int>) {
 
 @Composable
 fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
-                   ) {
+) {
+    var showPopup by remember { mutableStateOf(false) }
+
     BottomAppBar(
         modifier = Modifier.clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)),
-                containerColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                contentColor = Color.White
+        containerColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
+        contentColor = Color.White
     ) {
 
         IconButton(
@@ -243,8 +263,8 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
                 selected.value = R.drawable.home_button // change it to png
                 navController.navigate("home")
             },
-                modifier = Modifier.weight(1f)
-            ) {
+            modifier = Modifier.weight(1f)
+        ) {
 
             Icon(
                 painter = painterResource(id = R.drawable.home_button),
@@ -259,8 +279,8 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
                 selected.value = R.drawable.map_button
                 navController.navigate("map") //change to map
             },
-                modifier = Modifier.weight(1f)
-            ) {
+            modifier = Modifier.weight(1f)
+        ) {
 
             Icon(
                 painter = painterResource(id = R.drawable.map_button),
@@ -278,7 +298,8 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
         ) {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate("event_create") },
+//                    navController.navigate("event_create")
+                    showPopup = true           },
                 containerColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
                 contentColor = Color.Red
             ) {
@@ -288,14 +309,60 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
                 )
             }
         }
-
+        if (showPopup) {
+            Dialog(onDismissRequest = { showPopup = false }) {
+                Surface(
+                    shape = MaterialTheme.shapes.medium,
+                    tonalElevation = 8.dp,
+                    color = Color(red = 10, green = 16, blue = 69, alpha = 255)
+                ) {
+                    Column(
+                        Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "Please select a page to go",
+                            style = MaterialTheme.typography.headlineSmall,
+                            modifier = Modifier.padding(bottom = 8.dp),
+                            color = Color.White
+                        )
+                        Divider()
+                        Text(
+                            text = "Create Event",
+                            color = Color.White,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                                .clickable {
+                                    showPopup = false
+                                    navController.navigate("event_create")
+                                },
+                            fontSize = 18.sp
+                        )
+                        Text(
+                            text = "Join Event",
+                            color = Color.White,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                                .clickable {
+                                    showPopup = false
+                                    navController.navigate("event_join")
+                                },
+                            fontSize = 18.sp
+                        )
+                    }
+                }
+            }
+        }
         IconButton(
             onClick = {
                 selected.value = R.drawable.chat_button
                 navController.navigate("chat")
             },
             modifier = Modifier.weight(1f)
-            ) {
+        ) {
 
             Icon(
                 painter = painterResource(id = R.drawable.chat_button),
@@ -313,7 +380,7 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
                 navController.navigate("settings")
             },
             modifier = Modifier.weight(1f)
-            ) {
+        ) {
 
             Icon(
                 painter = painterResource(id = R.drawable.settings_button),
@@ -368,7 +435,7 @@ fun EventCard(event: Event, onDelete: () -> Unit) {
         elevation = 4.dp
     ) {
         Box {
-            event.imageUri?.let { uri ->
+            event.eventImage?.let { uri ->
                 Image(
                     painter = rememberAsyncImagePainter(model = uri),
                     contentDescription = "Event Background",
@@ -382,9 +449,9 @@ fun EventCard(event: Event, onDelete: () -> Unit) {
 
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = event.name, style = MaterialTheme.typography.headlineMedium, color = Color.White)
-                Text(text = event.details, style = MaterialTheme.typography.bodyMedium, color = Color.White)
-                Text(text = "Date: ${event.date}", style = MaterialTheme.typography.bodySmall, color = Color.White)
+                Text(text = event.eventName, style = MaterialTheme.typography.headlineMedium, color = Color.White)
+                Text(text = event.eventDetails, style = MaterialTheme.typography.bodyMedium, color = Color.White)
+                Text(text = "Date: ${event.eventDate}", style = MaterialTheme.typography.bodySmall, color = Color.White)
                 IconButton(onClick = onDelete, modifier = Modifier.align(Alignment.End)) {
                     Icon(imageVector = Icons.Default.Delete, contentDescription = "delete button")
                 }
@@ -393,3 +460,73 @@ fun EventCard(event: Event, onDelete: () -> Unit) {
         }
     }
 }
+
+@Composable
+fun JoinEventCard(event: Event) {
+    val context = LocalContext.current // Get the context here
+
+    Card(
+        modifier = Modifier
+            .size(300.dp),
+        elevation = 4.dp
+    ) {
+
+            Box {
+                event.eventImage?.let { uri ->
+                    Image(
+                        painter = rememberAsyncImagePainter(model = uri),
+                        contentDescription = "Event Background",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                    .background(Color.Black.copy(alpha = 0.6f)),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = event.eventName, style = MaterialTheme.typography.headlineMedium, color = Color.White)
+                    Text(text = event.eventDetails, style = MaterialTheme.typography.bodyMedium, color = Color.White)
+                    Text(text = "Date: ${event.eventDate}", style = MaterialTheme.typography.bodySmall, color = Color.White)
+                    Button(onClick = {
+                        // Logic for joining event
+                        Toast.makeText(context, "You joined the event: ${event.eventName}", Toast.LENGTH_SHORT).show()
+                    }) {
+                        Text("Join")
+                    }
+                }
+
+            }
+        }
+    }
+
+@Composable
+fun FilterDialog(
+    onDismiss: () -> Unit,
+    onFilterByName: () -> Unit,
+    onFilterByDate: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = { onDismiss() },
+        title = { Text(text = "Filter Events") },
+        text = {
+            Column {
+                TextButton(onClick = onFilterByName) {
+                    Text(text = "Sort by Name")
+                }
+                TextButton(onClick = onFilterByDate) {
+                    Text(text = "Sort by Date")
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { onDismiss() }) {
+                Text("Close")
+            }
+        }
+    )
+}
+
+
+
+

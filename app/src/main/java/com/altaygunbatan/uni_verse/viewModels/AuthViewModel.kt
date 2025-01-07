@@ -33,7 +33,7 @@ class AuthViewModel: ViewModel() {
                 if (task.isSuccessful) {
                     trySend(AuthResponse.Success)
                 } else {
-                    trySend(AuthResponse.Error(message = task.exception?.message ?:""))
+                    trySend(AuthResponse.Error(message = task.exception?.message ?:"Login Failed! Please check your credentials."))
                 }
             }
         awaitClose()

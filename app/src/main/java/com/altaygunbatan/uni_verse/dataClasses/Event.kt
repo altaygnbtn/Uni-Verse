@@ -1,18 +1,21 @@
 package com.altaygunbatan.uni_verse.dataClasses
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.time.LocalDate
 
 
 @Entity(tableName = "events")
 data class Event(
 
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val eventId: Int = 0,
 
-    val name: String,
-    val date: String,
-    val details: String,
-    val imageUri: String? = null
+    val eventName: String,
+    val eventDate: String,
+    val eventDetails: String,
+    val eventImage: String? = null
 
 )

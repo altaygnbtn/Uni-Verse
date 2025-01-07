@@ -68,13 +68,13 @@ fun CreateEventPage(
     navController: NavController,
     viewModel: EventViewModel) {
 
-    var name by remember { mutableStateOf("") }
-    var details by remember { mutableStateOf("") }
-    var date by remember { mutableStateOf("") }
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    var eventName by remember { mutableStateOf("") }
+    var eventDetails by remember { mutableStateOf("") }
+    var eventDate by remember { mutableStateOf("") }
+    var eventImage by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        imageUri = uri
+        eventImage = uri
     }
 
     // DatePickerDialog
@@ -82,7 +82,7 @@ fun CreateEventPage(
     val datePickerDialog = DatePickerDialog(
         context,
         { _, year, month, dayOfMonth ->
-            date = "$dayOfMonth/${month + 1}/$year" // Format the date
+            eventDate = "$dayOfMonth/${month + 1}/$year" // Format the date
         },
         calendar.get(Calendar.YEAR),
         calendar.get(Calendar.MONTH),
@@ -142,7 +142,7 @@ fun CreateEventPage(
                     shape = RoundedCornerShape(16.dp),
                     elevation = 4.dp,
                 ) {
-                    imageUri?.let {
+                    eventImage?.let {
                         Image(
                             painter = rememberAsyncImagePainter(model = it),
                             contentDescription = "Event Image",
@@ -165,8 +165,8 @@ fun CreateEventPage(
                     containerColor = Color.White
                 ),
                 shape = RoundedCornerShape(20.dp),
-                value = name,
-                onValueChange = { name = it },
+                value = eventName,
+                onValueChange = { eventName = it },
                 placeholder = {
                     Text(
                         text = "Event Name",
@@ -188,8 +188,8 @@ fun CreateEventPage(
                         containerColor = Color.White
                     ),
                     shape = RoundedCornerShape(20.dp),
-                    value = date,
-                    onValueChange = { date = it },
+                    value = eventDate,
+                    onValueChange = { eventDate = it },
                     placeholder = {
                         Text(
                             text = "Event Date",
@@ -217,8 +217,8 @@ fun CreateEventPage(
                     containerColor = Color.White
                 ),
                 shape = RoundedCornerShape(20.dp),
-                value = details,
-                onValueChange = { details = it },
+                value = eventDetails,
+                onValueChange = { eventDetails = it },
                 placeholder = {
                     Text(
                         text = "Event Details",
@@ -235,10 +235,10 @@ fun CreateEventPage(
                 Button(
                     onClick = {
                         val event = Event(
-                            name = name,
-                            details = details,
-                            date = date,
-                            imageUri = imageUri?.toString() // Save URI as a string
+                            eventName = eventName,
+                            eventDetails = eventDetails,
+                            eventDate = eventDate,
+                            eventImage = eventImage?.toString() // Save URI as a string
                         )
                         viewModel.addEvent(event)
                         navController.navigate("home")
@@ -259,7 +259,6 @@ fun CreateEventPage(
 
         }
     }
-
 
 }
 
