@@ -1,228 +1,185 @@
-package com.example.myproject
+package com.altaygunbatan.uni_verse.ui
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.FontStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.rememberCameraPositionState
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            MyPage()
-        }
-    }
-}
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyPage() {
-    Box(
-        Modifier
-            .width(412.dp)
-            .height(935.dp)
-    ) {
-        Box(
-            Modifier
-                .width(412.dp)
-                .height(130.dp)
-                .offset(y = (-57).dp)
-                .border(3.dp, Color(0xFFF2F4F3), RectangleShape)
-                .background(Color(0xFF0A1045))
-        ) {
-            Text(
-                text = "Logo",
-                color = Color.White,
-                modifier = Modifier.align(Alignment.Center)
+fun MapPage(navController: NavController) {
+    val selectedItem = remember { mutableStateOf("map") }
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Logo",
+                        fontFamily = displayFontFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        color = Color.White
+                    )
+                },
+                actions = {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Filled.Notifications,
+                            contentDescription = "Notifications",
+                            tint = Color.White
+                        )
+                    }
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = "Person",
+                            tint = Color.White
+                        )
+                    }
+                },
+                scrollBehavior = scrollBehavior,
+                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color(0xFF061A40))
             )
-        }
-        Box(
-            Modifier
-                .width(412.dp)
-                .height(113.dp)
-                .offset(y = 822.dp)
-                .background(Color(0xFF0A1045))
-        )
-        Box(
-            Modifier
-                .width(397.dp)
-                .height(282.dp)
-                .offset(x = 0.dp, y = 80.dp)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.map_image),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize()
-            )
-            Box(
-                Modifier
-                    .width(18.dp)
-                    .height(23.dp)
-                    .offset(x = 104.dp, y = 203.dp)
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.night_party),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(14.dp)
-                        .height(13.67.dp)
-                        .offset(x = 2.dp, y = 2.dp)
+        },
+        bottomBar = {
+            NavigationBar(containerColor = Color(0xFF061A40)) {
+                NavigationBarItem(
+                    selected = selectedItem.value == "home",
+                    onClick = { selectedItem.value = "home" },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Filled.Home,
+                            contentDescription = "Home",
+                            tint = Color.White
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = "Home",
+                            color = Color.White,
+                            fontSize = 10.sp
+                        )
+                    }
                 )
-            }
-            Box(
-                Modifier
-                    .width(35.dp)
-                    .height(45.dp)
-                    .offset(x = 181.dp, y = 260.dp)
-                    .background(Color(0xFFFF3C31))
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.color_throw),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(31.dp)
-                        .height(30.27.dp)
-                        .offset(x = 2.dp, y = 3.dp)
+                NavigationBarItem(
+                    selected = selectedItem.value == "map",
+                    onClick = { selectedItem.value = "map" },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Filled.Map,
+                            contentDescription = "Map",
+                            tint = Color.White
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = "Map",
+                            color = Color.White,
+                            fontSize = 10.sp
+                        )
+                    }
                 )
-            }
-            Box(
-                Modifier
-                    .width(18.dp)
-                    .height(23.dp)
-                    .offset(x = 238.dp, y = 282.dp)
-                    .background(Color(0xFFFF3C31))
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.sand_party),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(14.34.dp)
-                        .height(14.dp)
-                        .offset(x = 2.dp, y = 2.dp)
+                NavigationBarItem(
+                    selected = false,
+                    onClick = {},
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = "Add",
+                            tint = Color.White
+                        )
+                    },
+                    label = { Text("") }
                 )
-            }
-        }
-        Text(
-            text = "Location based events",
-            fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight.Bold,
-            fontSize = 22.sp,
-            color = Color(0xFF0A1045),
-            modifier = Modifier.offset(x = 21.dp, y = 378.dp)
-        )
-        Box(
-            Modifier
-                .width(366.dp)
-                .height(180.dp)
-                .offset(x = 16.dp, y = 455.dp)
-                .clip(RoundedCornerShape(topStart = 30.dp))
-                .background(Color.White)
-        ) {
-            Box(
-                Modifier
-                    .width(51.2.dp)
-                    .height(50.dp)
-                    .offset(x = 23.dp, y = 7.dp)
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.color_throw),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize()
+                NavigationBarItem(
+                    selected = selectedItem.value == "chat",
+                    onClick = { selectedItem.value = "chat" },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Filled.Chat,
+                            contentDescription = "Chat",
+                            tint = Color.White
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = "Chat",
+                            color = Color.White,
+                            fontSize = 10.sp
+                        )
+                    }
                 )
-            }
-            Box(
-                Modifier
-                    .width(30.dp)
-                    .height(30.dp)
-                    .offset(x = 342.dp, y = 17.dp)
-                    .border(4.dp, Color(0xFF91A0A6), RectangleShape)
-            )
-            Text(
-                text = "Colorfest yeditepe",
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 21.sp,
-                fontWeight = FontWeight.Normal,
-                color = Color(0xFF0A1045),
-                modifier = Modifier.offset(x = 88.dp, y = 18.dp)
-            )
-            Column(Modifier.offset(x = 102.dp, y = 47.dp)) {
-                Text(
-                    text = "Are you ready for a fun festival full of colors?",
-                    fontFamily = FontFamily.SansSerif,
-                    fontSize = 21.sp,
-                    fontStyle = FontStyle.Italic,
-                    fontWeight = FontWeight.Light,
-                    color = Color(0xFF0A1045)
-                )
-                Text(
-                    text = "April 23rd at 12:00 in ",
-                    fontFamily = FontFamily.SansSerif,
-                    fontSize = 21.sp,
-                    fontStyle = FontStyle.Italic,
-                    fontWeight = FontWeight.Light,
-                    color = Color(0xFF0A1045)
-                )
-                Text(
-                    text = "festival area",
-                    fontFamily = FontFamily.SansSerif,
-                    fontSize = 21.sp,
-                    fontStyle = FontStyle.Italic,
-                    fontWeight = FontWeight.Medium,
-                    color = Color(0xFF0A1045)
+                NavigationBarItem(
+                    selected = selectedItem.value == "settings",
+                    onClick = { selectedItem.value = "settings" },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Filled.Settings,
+                            contentDescription = "Settings",
+                            tint = Color.White
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = "Settings",
+                            color = Color.White,
+                            fontSize = 10.sp
+                        )
+                    }
                 )
             }
         }
+    ) { innerPadding ->
         Box(
-            Modifier
-                .width(366.dp)
-                .height(58.dp)
-                .offset(x = 18.dp, y = 676.dp)
-                .clip(RoundedCornerShape(topStart = 30.dp))
-                .background(Color.White)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .background(Color.White),
+            contentAlignment = Alignment.Center
         ) {
-            Box(
-                Modifier
-                    .width(51.dp)
-                    .height(49.8.dp)
-                    .offset(x = 25.dp, y = 2.dp)
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.sand_party),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize()
-                )
+            val cameraPositionState = rememberCameraPositionState {
+                position = CameraPosition.fromLatLngZoom(LatLng(40.975, 29.08), 13f)
             }
-            Box(
-                Modifier
-                    .width(30.dp)
-                    .height(30.dp)
-                    .offset(x = 344.dp, y = 14.dp)
-                    .border(4.dp, Color(0xFF91A0A6), RectangleShape)
-            )
-            Text(
-                text = "Fair for elders",
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 21.sp,
-                fontWeight = FontWeight.Normal,
-                color = Color(0xFF0A1045),
-                modifier = Modifier.offset(x = 90.dp, y = 17.dp)
+            GoogleMap(
+                modifier = Modifier.fillMaxSize(),
+                cameraPositionState = cameraPositionState
             )
         }
     }
@@ -230,8 +187,6 @@ fun MyPage() {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewMyPage() {
-    MyPage()
+fun PreviewMapPage() {
+    MapPage(navController = rememberNavController())
 }
-
-
