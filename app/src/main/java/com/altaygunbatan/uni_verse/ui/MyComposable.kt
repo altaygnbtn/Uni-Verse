@@ -39,6 +39,8 @@ import androidx.compose.material.TextButton
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
@@ -444,14 +446,16 @@ fun EventCard(event: Event, onDelete: () -> Unit) {
                 )
             }
             Column(
-                modifier = Modifier.padding(16.dp).
-                background(Color.Black.copy(alpha = 0.6f)),
-
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxSize()
+//                background(Color.Black.copy(alpha = 0.0f)),
+,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = event.eventName, style = MaterialTheme.typography.headlineMedium, color = Color.White)
-                Text(text = event.eventDetails, style = MaterialTheme.typography.bodyMedium, color = Color.White)
-                Text(text = "Date: ${event.eventDate}", style = MaterialTheme.typography.bodySmall, color = Color.White)
+                Text(text = event.eventName, style = MaterialTheme.typography.headlineMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
+                Text(text = event.eventDetails, style = MaterialTheme.typography.bodyMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
+                Text(text = "Date: ${event.eventDate}", style = MaterialTheme.typography.bodySmall, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
                 IconButton(onClick = onDelete, modifier = Modifier.align(Alignment.End)) {
                     Icon(imageVector = Icons.Default.Delete, contentDescription = "delete button")
                 }
@@ -462,12 +466,13 @@ fun EventCard(event: Event, onDelete: () -> Unit) {
 }
 
 @Composable
-fun JoinEventCard(event: Event) {
+fun JoinEventCard(event: Event, onLikeClicked: () -> Unit) {
     val context = LocalContext.current // Get the context here
 
     Card(
         modifier = Modifier
-            .size(300.dp),
+            .size(300.dp)
+            .padding(8.dp), //new added
         elevation = 4.dp
     ) {
 
@@ -481,19 +486,29 @@ fun JoinEventCard(event: Event) {
                     )
                 }
                 Column(
-                    modifier = Modifier.padding(16.dp)
-                    .background(Color.Black.copy(alpha = 0.6f)),
-                    verticalArrangement = Arrangement.SpaceBetween
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxSize()
+//                    .background(Color.Black.copy(alpha = 0.6f)),
+                    ,verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = event.eventName, style = MaterialTheme.typography.headlineMedium, color = Color.White)
-                    Text(text = event.eventDetails, style = MaterialTheme.typography.bodyMedium, color = Color.White)
-                    Text(text = "Date: ${event.eventDate}", style = MaterialTheme.typography.bodySmall, color = Color.White)
+                    Text(text = event.eventName, style = MaterialTheme.typography.headlineMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
+                    Text(text = event.eventDetails, style = MaterialTheme.typography.bodyMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
+                    Text(text = "Date: ${event.eventDate}", style = MaterialTheme.typography.bodySmall, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
                     Button(onClick = {
                         // Logic for joining event
                         Toast.makeText(context, "You joined the event: ${event.eventName}", Toast.LENGTH_SHORT).show()
                     }) {
                         Text("Join")
                     }
+                    // Like button
+                    IconButton(onClick = onLikeClicked) {
+                        Icon(
+                            imageVector = if (event.isLiked) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                            contentDescription = "Like Event"
+                        )
+                    }
+
                 }
 
             }
