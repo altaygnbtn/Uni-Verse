@@ -20,14 +20,36 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
     private val eventDao: EventDao = AppDatabase.getDatabase(application).eventDao()
 
     private val _events = MutableStateFlow<List<Event>>(emptyList())
-    val events: Flow<List<Event>> = _events
+    val events: StateFlow<List<Event>> get() = _events
 
-
+    private val _showOnlyLiked = MutableStateFlow(false)
+    val showOnlyLiked: StateFlow<Boolean> get() = _showOnlyLiked
 
     init {
         viewModelScope.launch {
             eventDao.getAllEvents().collect {
                 _events.value = it
+            }
+        }
+    }
+    fun toggleLike(event: Event) {
+        viewModelScope.launch {
+            val updatedEvent = event.copy(isLiked = !event.isLiked)
+            eventDao.updateEvent(updatedEvent)
+        }
+    }
+
+    fun toggleShowOnlyLiked() {
+        _showOnlyLiked.update { !it }
+        viewModelScope.launch {
+            if (_showOnlyLiked.value) {
+                eventDao.getLikedEvents().collect {
+                    _events.value = it
+                }
+            } else {
+                eventDao.getAllEvents().collect {
+                    _events.value = it
+                }
             }
         }
     }

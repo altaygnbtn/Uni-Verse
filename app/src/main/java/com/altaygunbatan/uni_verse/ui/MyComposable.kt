@@ -39,6 +39,8 @@ import androidx.compose.material.TextButton
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
@@ -464,12 +466,13 @@ fun EventCard(event: Event, onDelete: () -> Unit) {
 }
 
 @Composable
-fun JoinEventCard(event: Event) {
+fun JoinEventCard(event: Event, onLikeClicked: () -> Unit) {
     val context = LocalContext.current // Get the context here
 
     Card(
         modifier = Modifier
-            .size(300.dp),
+            .size(300.dp)
+            .padding(8.dp), //new added
         elevation = 4.dp
     ) {
 
@@ -498,6 +501,14 @@ fun JoinEventCard(event: Event) {
                     }) {
                         Text("Join")
                     }
+                    // Like button
+                    IconButton(onClick = onLikeClicked) {
+                        Icon(
+                            imageVector = if (event.isLiked) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                            contentDescription = "Like Event"
+                        )
+                    }
+
                 }
 
             }

@@ -53,7 +53,9 @@ fun JoinEventPage(navController: NavController,
 ) {
 
 
-    val events by viewModel.events.collectAsState(initial = emptyList())
+    val events by viewModel.events.collectAsState()
+    val showOnlyLiked by viewModel.showOnlyLiked.collectAsState()
+
 
     val showFilterDialog = remember { mutableStateOf(false) }
 
@@ -125,6 +127,7 @@ fun JoinEventPage(navController: NavController,
                 IconButton(
                     onClick = {
                         selected.value = R.drawable.liked_event
+                        viewModel.toggleShowOnlyLiked()
                     },
                     modifier = Modifier.weight(1f)
                 ) {
@@ -156,7 +159,7 @@ fun JoinEventPage(navController: NavController,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(events) { event ->
-                        JoinEventCard(event)
+                        JoinEventCard(event, onLikeClicked = { viewModel.toggleLike(event) })
                     }
                 }
 
