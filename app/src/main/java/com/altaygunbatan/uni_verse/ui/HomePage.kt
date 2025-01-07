@@ -82,7 +82,7 @@ fun HomePage(navController: NavController, viewModel : EventViewModel) {
                     .fillMaxWidth()
                     .wrapContentSize(Alignment.Center)
             ) {
-                HomeTextField()
+                HomeTextField(viewModel)
 
             }
             Spacer(modifier = Modifier.height(20.dp))

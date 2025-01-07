@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -55,6 +56,9 @@ fun JoinEventPage(navController: NavController,
 
     val events by viewModel.events.collectAsState()
     val showOnlyLiked by viewModel.showOnlyLiked.collectAsState()
+    var searchQuery by remember { mutableStateOf("") }
+
+
 
 
     val showFilterDialog = remember { mutableStateOf(false) }
@@ -98,7 +102,7 @@ fun JoinEventPage(navController: NavController,
                     .fillMaxWidth()
                     .wrapContentSize(Alignment.Center)
             ) {
-                HomeTextField()
+                HomeTextField(viewModel)
             }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp), // Space between the buttons
