@@ -1,6 +1,8 @@
 package com.altaygunbatan.uni_verse.ui
 
 import android.app.Application
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,8 +40,10 @@ import androidx.navigation.compose.rememberNavController
 import com.altaygunbatan.uni_verse.R
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
 import com.altaygunbatan.uni_verse.viewModels.EventViewModel
+import java.time.LocalDate
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
@@ -48,14 +52,13 @@ fun HomePage(navController: NavController, viewModel : EventViewModel) {
     val events by viewModel.events.collectAsState(initial = emptyList())
 
 
+
     val selected = remember {
         mutableIntStateOf(R.drawable.home_button)
     }
 
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
-
-    Scaffold( modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    Scaffold(
         topBar = {
             MyTopAppBar(navController,selected)
         },
@@ -113,17 +116,20 @@ fun HomePage(navController: NavController, viewModel : EventViewModel) {
 
             }
 
+            Text(
+                text = "Your Upcoming Events",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(16.dp)
+            )
+
+
+
         }
     }
 }
 
-@Preview
-@Composable
-fun HomePagePreview(modifier: Modifier = Modifier) {
 
-    HomePage(navController = rememberNavController(), viewModel = EventViewModel(Application()))
-
-}
 
 
 

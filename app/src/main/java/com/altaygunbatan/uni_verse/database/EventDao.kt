@@ -12,13 +12,20 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface EventDao {
 
-    @Query("SELECT * FROM events")
+    @Query("SELECT * FROM events ORDER BY eventDate ASC")
     fun getAllEvents(): Flow<List<Event>>
+
     @Insert
     suspend fun insertEvent(event: Event)       //import the events
 
     @Delete
-    suspend fun deleteEvent(event: Event)       //delete the events
+    suspend fun deleteEvent(event: Event)       //delete the
+
+    @Query("SELECT * FROM events ORDER BY eventDate ASC")
+    fun getEventsSortedByDate(): Flow<List<Event>>
+
+    @Query("SELECT * FROM events ORDER BY eventName ASC")
+    fun getEventsSortedByName(): Flow<List<Event>>
 
 
 

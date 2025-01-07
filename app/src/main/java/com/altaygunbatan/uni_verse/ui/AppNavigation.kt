@@ -37,6 +37,9 @@ fun AppNavigation(viewModel: EventViewModel) {
         composable ("event_create") {
             CreateEventPage(navController = navController, viewModel = viewModel)
         }
+        composable ("event_join") {
+            JoinEventPage(navController = navController, viewModel = viewModel)
+        }
 
     }
 }

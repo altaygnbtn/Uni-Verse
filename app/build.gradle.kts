@@ -107,6 +107,7 @@ dependencies {
     //coil dependency for image uploading
     implementation("io.coil-kt:coil-compose:2.2.2")
 
+    implementation ("com.google.accompanist:accompanist-flowlayout:0.25.0")  // for calendar grid
 
     implementation ("androidx.compose.ui:ui:1.5.1")
     implementation ("androidx.compose.material:material:1.5.1")

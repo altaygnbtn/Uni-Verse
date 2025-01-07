@@ -1,7 +1,10 @@
 package com.altaygunbatan.uni_verse.dataClasses
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.time.LocalDate
 
 
 @Entity(tableName = "events")

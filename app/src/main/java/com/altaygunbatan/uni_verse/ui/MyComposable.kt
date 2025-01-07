@@ -1,9 +1,12 @@
 package com.altaygunbatan.uni_verse.ui
 
 import android.net.Uri
+import android.os.Build
+import android.widget.Toast
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,13 +14,20 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 
+
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
 
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Card
@@ -25,6 +35,7 @@ import androidx.compose.material.Divider
 
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -57,6 +68,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -65,11 +77,14 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 
 import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.altaygunbatan.uni_verse.R
 import com.altaygunbatan.uni_verse.dataClasses.Event
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
+import com.altaygunbatan.uni_verse.viewModels.EventViewModel
 
 import com.google.firebase.auth.FirebaseAuth
+import java.time.LocalDate
 
 
 @Composable
@@ -445,3 +460,73 @@ fun EventCard(event: Event, onDelete: () -> Unit) {
         }
     }
 }
+
+@Composable
+fun JoinEventCard(event: Event) {
+    val context = LocalContext.current // Get the context here
+
+    Card(
+        modifier = Modifier
+            .size(300.dp),
+        elevation = 4.dp
+    ) {
+
+            Box {
+                event.eventImage?.let { uri ->
+                    Image(
+                        painter = rememberAsyncImagePainter(model = uri),
+                        contentDescription = "Event Background",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                    .background(Color.Black.copy(alpha = 0.6f)),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = event.eventName, style = MaterialTheme.typography.headlineMedium, color = Color.White)
+                    Text(text = event.eventDetails, style = MaterialTheme.typography.bodyMedium, color = Color.White)
+                    Text(text = "Date: ${event.eventDate}", style = MaterialTheme.typography.bodySmall, color = Color.White)
+                    Button(onClick = {
+                        // Logic for joining event
+                        Toast.makeText(context, "You joined the event: ${event.eventName}", Toast.LENGTH_SHORT).show()
+                    }) {
+                        Text("Join")
+                    }
+                }
+
+            }
+        }
+    }
+
+@Composable
+fun FilterDialog(
+    onDismiss: () -> Unit,
+    onFilterByName: () -> Unit,
+    onFilterByDate: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = { onDismiss() },
+        title = { Text(text = "Filter Events") },
+        text = {
+            Column {
+                TextButton(onClick = onFilterByName) {
+                    Text(text = "Sort by Name")
+                }
+                TextButton(onClick = onFilterByDate) {
+                    Text(text = "Sort by Date")
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { onDismiss() }) {
+                Text("Close")
+            }
+        }
+    )
+}
+
+
+
+
