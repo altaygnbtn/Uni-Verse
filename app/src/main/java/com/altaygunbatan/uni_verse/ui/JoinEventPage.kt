@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -100,7 +101,8 @@ fun JoinEventPage(navController: NavController,
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp), // Space between the buttons
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.size(width = 100.dp, height = 20.dp)
+                modifier = Modifier
+                    .size(width = 100.dp, height = 20.dp)
                     .padding(start = 20.dp)
             ) {
 
@@ -150,7 +152,8 @@ fun JoinEventPage(navController: NavController,
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(start = 20.dp)
+                        .padding(start = 20.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(events) { event ->
                         JoinEventCard(event)
@@ -176,3 +179,9 @@ fun JoinEventPage(navController: NavController,
     }
 }
 
+@Preview
+@Composable
+fun JoinEventPagePreview() {
+
+    JoinEventPage(navController = rememberNavController(), viewModel = viewModel())
+}
