@@ -27,6 +27,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.AlertDialog
 
 //noinspection UsingMaterialAndMaterial3Libraries
@@ -58,6 +60,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -71,6 +74,7 @@ import androidx.compose.ui.platform.LocalContext
 
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -147,15 +151,21 @@ fun MyButton2(text2:String, navController: NavController){
             color = Color.White)
     }
 }
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTextField(){
+fun HomeTextField(viewModel: EventViewModel){
     var text by remember { mutableStateOf("") }
+
+    var searchQuery by remember { mutableStateOf("") }
+
     TextField(
         onValueChange = {
-            text = it
+            searchQuery = it
         },
-        value = text,
+        value = searchQuery,
+        singleLine = true,
         modifier = Modifier.size(width = 350.dp, height = 50.dp),
         shape = RoundedCornerShape(size = 20.dp),
         colors = TextFieldDefaults.textFieldColors(
@@ -174,8 +184,14 @@ fun HomeTextField(){
                 fontFamily = displayFontFamily,
                 fontSize = 12.sp
             )
-        }
+        },
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
+
+        keyboardActions = KeyboardActions(onSearch = {
+            viewModel.searchEvents(searchQuery)
+        })
     )
+
 }
 
 fun signUpWithEmailAndPassword(email: String, password: String, onResult: (Boolean, String?) -> Unit) {

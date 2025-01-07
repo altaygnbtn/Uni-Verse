@@ -35,6 +35,9 @@ interface EventDao {
     @Query("SELECT * FROM events ORDER BY eventName ASC")
     fun getEventsSortedByName(): Flow<List<Event>>
 
+    @Query("SELECT * FROM events WHERE eventName LIKE '%' || :query || '%'")
+    fun searchEventsByName(query: String): Flow<List<Event>>
+
 
 
 }
