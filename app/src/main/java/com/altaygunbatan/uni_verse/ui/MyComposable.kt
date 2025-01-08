@@ -168,12 +168,12 @@ fun HomeTextField(viewModel: EventViewModel){
         singleLine = true,
         modifier = Modifier.size(width = 350.dp, height = 50.dp),
         shape = RoundedCornerShape(size = 20.dp),
-        colors = TextFieldDefaults.textFieldColors(
-            unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-
-            containerColor = Color.White
-        ),
+//        colors = TextFieldDefaults.textFieldColors(
+//            unfocusedIndicatorColor = Color.Transparent,
+//            focusedIndicatorColor = Color.Transparent,
+//
+//            containerColor = Color.White
+//        ),
         trailingIcon = {
             Icon(painter = painterResource(id = R.drawable.baseline_search_24),
                 contentDescription = "Search Button")
@@ -450,7 +450,8 @@ fun ImageUploadCard() {
 fun EventCard(event: Event, onDelete: () -> Unit) {
     Card(
         modifier = Modifier.size(300.dp),
-        elevation = 4.dp
+        elevation = 4.dp,
+        shape = RoundedCornerShape(10.dp)
     ) {
         Box {
             event.eventImage?.let { uri ->
@@ -489,7 +490,8 @@ fun JoinEventCard(event: Event, onLikeClicked: () -> Unit) {
         modifier = Modifier
             .size(300.dp)
             .padding(8.dp), //new added
-        elevation = 4.dp
+        elevation = 4.dp,
+        shape = RoundedCornerShape(10.dp)
     ) {
 
             Box {

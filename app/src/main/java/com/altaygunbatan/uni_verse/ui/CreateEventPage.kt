@@ -59,6 +59,10 @@ import com.altaygunbatan.uni_verse.R
 import com.altaygunbatan.uni_verse.dataClasses.Event
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
 import com.altaygunbatan.uni_verse.viewModels.EventViewModel
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.AdvancedMarker
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MarkerState
 import java.util.Calendar
 
 
@@ -76,6 +80,8 @@ fun CreateEventPage(
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         eventImage = uri
     }
+
+
 
     // DatePickerDialog
     val calendar = Calendar.getInstance()
@@ -159,11 +165,11 @@ fun CreateEventPage(
             TextField(
                 modifier = Modifier
                     .padding(16.dp),
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    containerColor = Color.White
-                ),
+//                colors = TextFieldDefaults.textFieldColors(
+//                    unfocusedIndicatorColor = Color.Transparent,
+//                    focusedIndicatorColor = Color.Transparent,
+//                    containerColor = Color.White
+//                ),
                 shape = RoundedCornerShape(20.dp),
                 value = eventName,
                 onValueChange = { eventName = it },
@@ -182,11 +188,11 @@ fun CreateEventPage(
                 TextField(
                     modifier = Modifier
                         .padding(16.dp),
-                    colors = TextFieldDefaults.textFieldColors(
-                        unfocusedIndicatorColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,
-                        containerColor = Color.White
-                    ),
+//                    colors = TextFieldDefaults.textFieldColors(
+//                        unfocusedIndicatorColor = Color.Transparent,
+//                        focusedIndicatorColor = Color.Transparent,
+//                        containerColor = Color.White
+//                    ),
                     shape = RoundedCornerShape(20.dp),
                     value = eventDate,
                     onValueChange = { eventDate = it },
@@ -208,14 +214,15 @@ fun CreateEventPage(
                 }
             }
 
+
             TextField(
                 modifier = Modifier
                     .padding(16.dp),
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    containerColor = Color.White
-                ),
+//                colors = TextFieldDefaults.textFieldColors(
+//                    unfocusedIndicatorColor = Color.Transparent,
+//                    focusedIndicatorColor = Color.Transparent,
+//                    containerColor = Color.White
+//                ),
                 shape = RoundedCornerShape(20.dp),
                 value = eventDetails,
                 onValueChange = { eventDetails = it },
@@ -227,6 +234,7 @@ fun CreateEventPage(
                     )
                 },
             )
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -238,7 +246,8 @@ fun CreateEventPage(
                             eventName = eventName,
                             eventDetails = eventDetails,
                             eventDate = eventDate,
-                            eventImage = eventImage?.toString() // Save URI as a string
+                            eventImage = eventImage?.toString(), // Save URI as a string
+
                         )
                         viewModel.addEvent(event)
                         navController.navigate("home")
