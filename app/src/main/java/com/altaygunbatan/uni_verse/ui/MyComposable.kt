@@ -160,7 +160,7 @@ fun HomeTextField(viewModel: EventViewModel){
 
     var searchQuery by remember { mutableStateOf("") }
 
-    TextField(
+    androidx.compose.material.TextField(
         onValueChange = {
             searchQuery = it
         },
@@ -168,12 +168,10 @@ fun HomeTextField(viewModel: EventViewModel){
         singleLine = true,
         modifier = Modifier.size(width = 350.dp, height = 50.dp),
         shape = RoundedCornerShape(size = 20.dp),
-//        colors = TextFieldDefaults.textFieldColors(
-//            unfocusedIndicatorColor = Color.Transparent,
-//            focusedIndicatorColor = Color.Transparent,
-//
-//            containerColor = Color.White
-//        ),
+        colors = androidx.compose.material.TextFieldDefaults.textFieldColors(
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+        ),
         trailingIcon = {
             Icon(painter = painterResource(id = R.drawable.baseline_search_24),
                 contentDescription = "Search Button")
@@ -191,6 +189,7 @@ fun HomeTextField(viewModel: EventViewModel){
             viewModel.searchEvents(searchQuery)
         })
     )
+
 
 }
 
@@ -241,7 +240,7 @@ fun MyTopAppBar(navController: NavController, selected: MutableState<Int>) {
                     modifier = Modifier.size(width = 20.dp, height = 20.dp),
                     painter = painterResource(id = R.drawable.notification_button),
                     contentDescription = "notification button",
-                    tint = if (selected.value == R.drawable.notification_button) Color.White else Color.Gray
+                    tint = if (selected.value == R.drawable.notification_button) Color(red = 255, green = 81, blue = 71, alpha = 255) else Color.White
                 )
 
             }
@@ -250,7 +249,7 @@ fun MyTopAppBar(navController: NavController, selected: MutableState<Int>) {
                     modifier = Modifier.size(width = 20.dp, height = 20.dp),
                     painter = painterResource(id = R.drawable.profile_button),
                     contentDescription = "Profile",
-                    tint = if (selected.value == R.drawable.profile_button) Color.White else Color.Gray
+                    tint = if (selected.value == R.drawable.profile_button) Color(red = 255, green = 81, blue = 71, alpha = 255) else Color.White
                 )
 
             }
@@ -288,7 +287,7 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
                 painter = painterResource(id = R.drawable.home_button),
                 contentDescription = "Home Button",
                 modifier = Modifier.size(30.dp),
-                tint = if (selected.value == R.drawable.home_button) Color.White else Color.Gray
+                tint = if (selected.value == R.drawable.home_button) Color(red = 255, green = 81, blue = 71, alpha = 255) else Color.White
             )
         }
 
@@ -304,7 +303,7 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
                 painter = painterResource(id = R.drawable.map_button),
                 contentDescription = "Event Button",
                 modifier = Modifier.size(30.dp),
-                tint = if (selected.value == R.drawable.map_button) Color.White else Color.Gray
+                tint = if (selected.value == R.drawable.map_button) Color(red = 255, green = 81, blue = 71, alpha = 255) else Color.White
             )
         }
 
@@ -386,7 +385,7 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
                 painter = painterResource(id = R.drawable.chat_button),
                 contentDescription = "Chat Button",
                 modifier = Modifier.size(30.dp),
-                tint = if (selected.value == R.drawable.chat_button) Color.White else Color.Gray
+                tint = if (selected.value == R.drawable.chat_button) Color(red = 255, green = 81, blue = 71, alpha = 255) else Color.White
             )
         }
 
@@ -404,7 +403,7 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
                 painter = painterResource(id = R.drawable.settings_button),
                 contentDescription = "Settings Button",
                 modifier = Modifier.size(30.dp),
-                tint = if (selected.value == R.drawable.settings_button) Color.White else Color.Gray
+                tint = if (selected.value == R.drawable.settings_button) Color(red = 255, green = 81, blue = 71, alpha = 255) else Color.White
             )
         }
     }
@@ -413,13 +412,13 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
 
 @Composable
 fun ImageUploadCard() {
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    var eventImage by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
 
     // Launcher to pick an image
 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        imageUri = uri
+        eventImage = uri
     }
 
     Card(
@@ -432,14 +431,15 @@ fun ImageUploadCard() {
         shape = RoundedCornerShape(16.dp),
         elevation = 4.dp
     ) {
-        imageUri?.let {
+        eventImage?.let {
             Image(
                 painter = rememberAsyncImagePainter(model = it),
                 contentDescription = "Event Image",
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(150.dp)
-                    .padding(top = 16.dp)
+                    .padding(top = 16.dp),
+                contentScale = ContentScale.Crop
             )
         }
         }

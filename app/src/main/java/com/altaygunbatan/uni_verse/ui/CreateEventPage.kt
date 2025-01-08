@@ -121,7 +121,7 @@ fun CreateEventPage(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(color = Color(red = 255, green = 250, blue = 241)),
+                .background(color = Color(red = 242, green = 244, blue = 243)),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
 
@@ -159,22 +159,20 @@ fun CreateEventPage(
                             contentDescription = "Event Image",
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(150.dp)
-                                .padding(top = 16.dp),
+                                .height(150.dp),
                             contentScale = ContentScale.Crop
                         )
                     }
                 }
             }
 
-            TextField(
+            androidx.compose.material.TextField(
                 modifier = Modifier
                     .padding(16.dp),
-//                colors = TextFieldDefaults.textFieldColors(
-//                    unfocusedIndicatorColor = Color.Transparent,
-//                    focusedIndicatorColor = Color.Transparent,
-//                    containerColor = Color.White
-//                ),
+                colors = androidx.compose.material.TextFieldDefaults.textFieldColors(
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                ),
                 shape = RoundedCornerShape(20.dp),
                 value = eventName,
                 onValueChange = { eventName = it },
@@ -190,14 +188,14 @@ fun CreateEventPage(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                TextField(
+                androidx.compose.material.TextField(
                     modifier = Modifier
                         .padding(16.dp),
-//                    colors = TextFieldDefaults.textFieldColors(
-//                        unfocusedIndicatorColor = Color.Transparent,
-//                        focusedIndicatorColor = Color.Transparent,
-//                        containerColor = Color.White
-//                    ),
+                    colors = androidx.compose.material.TextFieldDefaults.textFieldColors(
+                        unfocusedIndicatorColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+
+                    ),
                     shape = RoundedCornerShape(20.dp),
                     value = eventDate,
                     onValueChange = { eventDate = it },
@@ -220,14 +218,14 @@ fun CreateEventPage(
             }
 
 
-            TextField(
+            androidx.compose.material.TextField(
                 modifier = Modifier
                     .padding(16.dp),
-//                colors = TextFieldDefaults.textFieldColors(
-//                    unfocusedIndicatorColor = Color.Transparent,
-//                    focusedIndicatorColor = Color.Transparent,
-//                    containerColor = Color.White
-//                ),
+                colors = androidx.compose.material.TextFieldDefaults.textFieldColors(
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+
+                ),
                 shape = RoundedCornerShape(20.dp),
                 value = eventDetails,
                 onValueChange = { eventDetails = it },

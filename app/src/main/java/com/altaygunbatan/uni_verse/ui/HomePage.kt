@@ -73,7 +73,7 @@ fun HomePage(navController: NavController, viewModel : EventViewModel) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .background(color = Color(red = 255, green = 250, blue = 241)),
+                .background(color = Color(red = 242, green = 244, blue = 243)),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Spacer(modifier = Modifier.height(10.dp))
