@@ -17,7 +17,7 @@ data class Event(
     val eventDate: String,
     val eventDetails: String,
     val eventImage: String? = null,
-    var isLiked: Boolean = false, // New property
+    var isLiked: Boolean = false,
 
 
 

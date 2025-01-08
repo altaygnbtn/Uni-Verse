@@ -3,12 +3,17 @@ package com.altaygunbatan.uni_verse.ui
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 import com.altaygunbatan.uni_verse.viewModels.EventViewModel
+import com.google.android.gms.maps.model.LatLng
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -16,6 +21,7 @@ import com.altaygunbatan.uni_verse.viewModels.EventViewModel
 fun AppNavigation(viewModel: EventViewModel) {
 
     val navController = rememberNavController()
+
 
 
 
@@ -35,7 +41,7 @@ fun AppNavigation(viewModel: EventViewModel) {
             HomePage(navController = navController, viewModel)
         }
         composable ("map") {
-            MapPage(navController = navController)
+            MapPage(navController = navController, viewModel)
         }
         composable ("event_create") {
             CreateEventPage(navController = navController, viewModel = viewModel)
@@ -43,6 +49,7 @@ fun AppNavigation(viewModel: EventViewModel) {
         composable ("event_join") {
             JoinEventPage(navController = navController, viewModel = viewModel)
         }
+
 
     }
 }
