@@ -450,7 +450,8 @@ fun ImageUploadCard() {
 fun EventCard(event: Event, onDelete: () -> Unit) {
     Card(
         modifier = Modifier.size(300.dp),
-        elevation = 4.dp
+        elevation = 4.dp,
+        shape = RoundedCornerShape(10.dp)
     ) {
         Box {
             event.eventImage?.let { uri ->
@@ -489,7 +490,8 @@ fun JoinEventCard(event: Event, onLikeClicked: () -> Unit) {
         modifier = Modifier
             .size(300.dp)
             .padding(8.dp), //new added
-        elevation = 4.dp
+        elevation = 4.dp,
+        shape = RoundedCornerShape(10.dp)
     ) {
 
             Box {
