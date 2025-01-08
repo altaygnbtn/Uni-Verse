@@ -1,5 +1,6 @@
 package com.altaygunbatan.uni_verse.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,13 +21,16 @@ import com.altaygunbatan.uni_verse.R
 import com.altaygunbatan.uni_verse.viewModels.EventViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.PinConfig
 import com.google.maps.android.compose.AdvancedMarker
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 
+@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapPage(navController: NavController, viewModel: EventViewModel
@@ -68,6 +72,14 @@ fun MapPage(navController: NavController, viewModel: EventViewModel
 
                 GoogleMap(cameraPositionState = cameraPositionState,
                     properties = mapProperties) {
+
+
+
+                            AdvancedMarker(
+                                state = MarkerState(position = LatLng(40.972199819701856, 29.1521527716205 )),
+                                title = "Marker in Yeditpe",
+
+                            )
 
                         }
                     }
