@@ -1,5 +1,7 @@
 package com.altaygunbatan.uni_verse.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 
 import androidx.navigation.compose.NavHost
@@ -9,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.altaygunbatan.uni_verse.viewModels.EventViewModel
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavigation(viewModel: EventViewModel) {
 

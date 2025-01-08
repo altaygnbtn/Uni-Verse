@@ -168,12 +168,12 @@ fun HomeTextField(viewModel: EventViewModel){
         singleLine = true,
         modifier = Modifier.size(width = 350.dp, height = 50.dp),
         shape = RoundedCornerShape(size = 20.dp),
-        colors = TextFieldDefaults.textFieldColors(
-            unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-
-            containerColor = Color.White
-        ),
+//        colors = TextFieldDefaults.textFieldColors(
+//            unfocusedIndicatorColor = Color.Transparent,
+//            focusedIndicatorColor = Color.Transparent,
+//
+//            containerColor = Color.White
+//        ),
         trailingIcon = {
             Icon(painter = painterResource(id = R.drawable.baseline_search_24),
                 contentDescription = "Search Button")

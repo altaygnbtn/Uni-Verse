@@ -113,4 +113,15 @@ dependencies {
     implementation ("androidx.compose.material:material:1.5.1")
     implementation ("androidx.compose.ui:ui-tooling-preview:1.5.1")
 
+
+    // google map implementation
+    implementation ("com.google.maps.android:maps-compose:6.4.1")
+
+    // Optionally, you can include the Compose utils library for Clustering,
+    // Street View metadata checks, etc.
+    implementation ("com.google.maps.android:maps-compose-utils:6.4.1")
+
+    // Optionally, you can include the widgets library for ScaleBar, etc.
+    implementation ("com.google.maps.android:maps-compose-widgets:6.4.1")
+
 }
