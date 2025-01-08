@@ -68,7 +68,7 @@ fun SignupPage( navController: NavController, onSignupSuccess: () -> Unit) {
     }
     Column(
         modifier = Modifier.fillMaxSize()
-            .background(color = Color(red = 255, green = 250, blue = 241))
+            .background(color = Color(red = 242, green = 244, blue = 243))
     ){
         Text(
             text = "SIGN UP",

@@ -58,7 +58,7 @@ fun ForgotPasswordPage(navController : NavController) {
 
     Column(
         modifier = Modifier.fillMaxSize()
-            .background(color = Color(red = 255, green = 250, blue = 241))
+            .background(color = Color(red = 242, green = 244, blue = 243)),
     ) {
         Text(
             text = "FORGOT PASSWORD",

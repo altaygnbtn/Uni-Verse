@@ -25,6 +25,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
+import com.altaygunbatan.uni_verse.database.AppDatabase
+import com.altaygunbatan.uni_verse.repositories.UserProfileRepository
 import com.altaygunbatan.uni_verse.ui.AppNavigation
 import com.altaygunbatan.uni_verse.ui.CreateEventPage
 import com.altaygunbatan.uni_verse.ui.ForgotPasswordPage
@@ -36,13 +38,28 @@ import com.altaygunbatan.uni_verse.ui.theme.AppTypography
 import com.altaygunbatan.uni_verse.ui.theme.UniVerseTheme
 import com.altaygunbatan.uni_verse.viewModels.AuthViewModel
 import com.altaygunbatan.uni_verse.viewModels.EventViewModel
+import com.altaygunbatan.uni_verse.viewModels.UserProfileViewModel
+import com.altaygunbatan.uni_verse.viewModels.UserProfileViewModelFactory
 
 
 class MainActivity : ComponentActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+        val database = AppDatabase.getDatabase(this)
+        val userProfileDao = database.userProfileDao()
+        val repository = UserProfileRepository(userProfileDao)
+
+        val viewModelFactory = UserProfileViewModelFactory(repository)
+        val profileViewModel: UserProfileViewModel =
+            ViewModelProvider(this, viewModelFactory).get(UserProfileViewModel::class.java)
+
+        profileViewModel.loadUserProfile()
+
+
+
         enableEdgeToEdge()
         setContent {
 
@@ -54,7 +71,7 @@ class MainActivity : ComponentActivity() {
             val viewModel = ViewModelProvider(this).get(EventViewModel::class.java)
             val navController = rememberNavController()
 
-            AppNavigation(viewModel)
+            AppNavigation(viewModel, profileViewModel = profileViewModel)
 
 
 

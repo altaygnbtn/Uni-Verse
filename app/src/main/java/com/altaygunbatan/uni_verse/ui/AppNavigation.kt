@@ -13,12 +13,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 import com.altaygunbatan.uni_verse.viewModels.EventViewModel
+import com.altaygunbatan.uni_verse.viewModels.UserProfileViewModel
 import com.google.android.gms.maps.model.LatLng
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AppNavigation(viewModel: EventViewModel) {
+fun AppNavigation(viewModel: EventViewModel, profileViewModel: UserProfileViewModel) {
 
     val navController = rememberNavController()
 
@@ -48,6 +49,9 @@ fun AppNavigation(viewModel: EventViewModel) {
         }
         composable ("event_join") {
             JoinEventPage(navController = navController, viewModel = viewModel)
+        }
+        composable ("profile") {
+            ProfilePage(navController = navController, profileViewModel = profileViewModel)
         }
 
 
