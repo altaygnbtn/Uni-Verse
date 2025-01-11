@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 
 import com.altaygunbatan.uni_verse.viewModels.EventViewModel
 import com.altaygunbatan.uni_verse.viewModels.UserProfileViewModel
+import com.example.identicalpage.ChatPage
 import com.google.android.gms.maps.model.LatLng
 import okhttp3.internal.http2.Settings
 
@@ -57,6 +58,10 @@ fun AppNavigation(viewModel: EventViewModel, profileViewModel: UserProfileViewMo
         composable ("settings") {
             SettingsPage(navController = navController) //navigate to SettingsPage
         }
+        composable ("chat") {
+            ChatPage(navController = navController) //navigate to SettingsPage
+        }
+
 
 
     }
