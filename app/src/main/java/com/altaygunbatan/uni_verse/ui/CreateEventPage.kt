@@ -79,7 +79,6 @@ fun CreateEventPage(navController: NavController, viewModel: EventViewModel) {
         mutableIntStateOf(R.drawable.baseline_add_24)
     }
 
-
     Scaffold(
         topBar = {
             MyTopAppBar(navController, selected)
@@ -98,17 +97,7 @@ fun CreateEventPage(navController: NavController, viewModel: EventViewModel) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
 
-            Text(
-                text = stringResource(R.string.create_event),
-                fontFamily = displayFontFamily,
-                fontSize = 25.sp,
-                color = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 30.dp)
-            )
-
                 CreateEvent(navController = navController, viewModel = viewModel)
-
 
         }
     }

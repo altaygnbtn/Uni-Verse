@@ -13,7 +13,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+
 import androidx.compose.foundation.layout.Column
+
+
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -25,6 +28,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -69,6 +73,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -963,6 +968,16 @@ fun CreateEvent(modifier: Modifier = Modifier, navController: NavController, vie
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         eventImage = uri
     }
+
+    androidx.compose.material3.Text(
+        text = stringResource(R.string.create_event),
+        fontFamily = displayFontFamily,
+        fontSize = 25.sp,
+        color = Color(red = 10, green = 16, blue = 69, alpha = 255),
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier.padding(start = 30.dp)
+    )
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -1098,6 +1113,109 @@ fun CreateEvent(modifier: Modifier = Modifier, navController: NavController, vie
 
 }
 
+
+@Composable
+fun JoinEventPageFilters(modifier: Modifier = Modifier, viewModel: EventViewModel) {
+
+    val events by viewModel.events.collectAsState()
+    val showOnlyLiked by viewModel.showOnlyLiked.collectAsState()
+    var searchQuery by remember { mutableStateOf("") }
+
+
+
+
+    val showFilterDialog = remember { mutableStateOf(false) }
+
+    val selected = remember {
+        mutableIntStateOf(R.drawable.baseline_add_24)
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentSize(Alignment.Center)
+    ) {
+        HomeTextField(viewModel)
+    }
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp), // Space between the buttons
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .size(width = 100.dp, height = 20.dp)
+            .padding(start = 20.dp)
+    ) {
+
+        IconButton(
+            onClick = {
+                selected.value = R.drawable.filter
+                showFilterDialog.value = true
+            },
+            modifier = Modifier.weight(1f)
+        ) {
+
+            Icon(
+                painter = painterResource(id = R.drawable.filter),
+                contentDescription = "Filter Button",
+                modifier = Modifier.size(30.dp),
+                tint = if (selected.value == R.drawable.filter) Color.Blue else Color.Gray
+            )
+        }
+
+        IconButton(
+            onClick = {
+                selected.value = R.drawable.liked_event
+                viewModel.toggleShowOnlyLiked()
+            },
+            modifier = Modifier.weight(1f)
+        ) {
+
+            Icon(
+                painter = painterResource(id = R.drawable.liked_event),
+                contentDescription = "Liked Events Button",
+                modifier = Modifier.size(30.dp),
+                tint = if (selected.value == R.drawable.liked_event) Color.Blue else Color.Gray
+            )
+        }
+
+
+    }
+
+
+    // LazyColumn for displaying filtered events
+    if (events.isEmpty()) {
+        androidx.compose.material3.Text(
+            text = "No events available to join",
+//            modifier = Modifier.align(Alignment.CenterHorizontally),
+            textAlign = TextAlign.Center
+        )
+    } else {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 20.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(events) { event ->
+                JoinEventCard(event, onLikeClicked = { viewModel.toggleLike(event) })
+            }
+        }
+
+    }
+    if (showFilterDialog.value) {
+        FilterDialog(
+            onDismiss = { showFilterDialog.value = false },
+            onFilterByName = {
+                viewModel.filterByName()
+                showFilterDialog.value = false
+            },
+            onFilterByDate = {
+                viewModel.filterByDate()
+                showFilterDialog.value = false
+            }
+        )
+    }
+
+}
 
 @Composable
 fun EventCard(event: Event, onDelete: () -> Unit) {
