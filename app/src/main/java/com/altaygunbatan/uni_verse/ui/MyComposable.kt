@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 
 
+
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -1160,8 +1161,9 @@ fun JoinEventPageFilters(modifier: Modifier = Modifier, viewModel: EventViewMode
                 painter = painterResource(id = R.drawable.filter),
                 contentDescription = "Filter Button",
                 modifier = Modifier.size(30.dp),
-                tint = if (selected.value == R.drawable.filter) Color.Blue else Color.Gray
+                tint = if (selected.value == R.drawable.filter) Color.Red else Color.Blue
             )
+
         }
 
         IconButton(
@@ -1176,19 +1178,17 @@ fun JoinEventPageFilters(modifier: Modifier = Modifier, viewModel: EventViewMode
                 painter = painterResource(id = R.drawable.liked_event),
                 contentDescription = "Liked Events Button",
                 modifier = Modifier.size(30.dp),
-                tint = if (selected.value == R.drawable.liked_event) Color.Blue else Color.Gray
+                tint = if (selected.value == R.drawable.liked_event) Color.Red else Color.Blue
             )
         }
+// LazyColumn for displaying filtered events
 
 
     }
 
-
-    // LazyColumn for displaying filtered events
     if (events.isEmpty()) {
         androidx.compose.material3.Text(
             text = "No events available to join",
-//            modifier = Modifier.align(Alignment.CenterHorizontally),
             textAlign = TextAlign.Center
         )
     } else {
@@ -1217,6 +1217,7 @@ fun JoinEventPageFilters(modifier: Modifier = Modifier, viewModel: EventViewMode
             }
         )
     }
+
 
 }
 
@@ -1486,20 +1487,29 @@ fun FilterDialog(
 ) {
     AlertDialog(
         onDismissRequest = { onDismiss() },
-        title = { Text(text = "Filter Events") },
+        title = { Text(text = "Filter Events",
+            color = Color.Red,
+            fontFamily = displayFontFamily)
+             },
         text = {
             Column {
                 TextButton(onClick = onFilterByName) {
-                    Text(text = "Sort by Name")
+                    Text(text = "Sort by Name",
+                        color = Color(red = 10, green = 16, blue = 69, alpha = 255),
+                        fontFamily = bodyFontFamily)
                 }
                 TextButton(onClick = onFilterByDate) {
-                    Text(text = "Sort by Date")
+                    Text(text = "Sort by Date",
+                        color = Color(red = 10, green = 16, blue = 69, alpha = 255),
+                        fontFamily = bodyFontFamily)
                 }
             }
         },
         confirmButton = {
             TextButton(onClick = { onDismiss() }) {
-                Text("Close")
+                Text("Close",
+                    color = Color(red = 10, green = 16, blue = 69, alpha = 255),
+                    fontFamily = bodyFontFamily)
             }
         }
     )
