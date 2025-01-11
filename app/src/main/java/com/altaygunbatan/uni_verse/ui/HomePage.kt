@@ -49,14 +49,9 @@ import java.time.LocalDate
 @Composable
 fun HomePage(navController: NavController, viewModel : EventViewModel) {
 
-    val events by viewModel.events.collectAsState(initial = emptyList())
-
-
-
     val selected = remember {
         mutableIntStateOf(R.drawable.home_button)
     }
-
 
     Scaffold(
         topBar = {
@@ -68,7 +63,6 @@ fun HomePage(navController: NavController, viewModel : EventViewModel) {
 
     ) { innerPadding ->
 
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -76,52 +70,10 @@ fun HomePage(navController: NavController, viewModel : EventViewModel) {
                 .background(color = Color(red = 242, green = 244, blue = 243)),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Spacer(modifier = Modifier.height(10.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentSize(Alignment.Center)
-            ) {
-                HomeTextField(viewModel)
 
-            }
-            Spacer(modifier = Modifier.height(20.dp))
+            HomePageTextField(viewModel = viewModel)
 
-            Text(
-                text = "My Events",
-                fontFamily = displayFontFamily,
-                fontSize = 20.sp,
-                style = TextStyle(fontWeight = FontWeight.Bold),
-                modifier = Modifier.padding(start = 30.dp)
-            )
-
-            if (events.isEmpty()) {
-                Text(
-                    text = "No events available",
-                    modifier = Modifier.fillMaxSize(),
-                    textAlign = TextAlign.Center
-                )
-            } else {
-                LazyRow(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(events) { event ->
-                        EventCard(event, onDelete = { viewModel.deleteEvent(event) })
-                    }
-                }
-
-
-            }
-
-            Text(
-                text = "Your Upcoming Events",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(16.dp)
-            )
+            HomePageDisplayEvents(viewModel = viewModel)
 
 
 

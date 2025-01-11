@@ -51,6 +51,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -72,42 +73,14 @@ import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateEventPage(
-    navController: NavController,
-    viewModel: EventViewModel) {
-
-    var eventName by remember { mutableStateOf("") }
-    var eventDetails by remember { mutableStateOf("") }
-    var eventDate by remember { mutableStateOf("") }
-    var eventImage by remember { mutableStateOf<Uri?>(null) }
-    val context = LocalContext.current
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        eventImage = uri
-    }
-
-
-
-
-    // DatePickerDialog
-    val calendar = Calendar.getInstance()
-    val datePickerDialog = DatePickerDialog(
-        context,
-        { _, year, month, dayOfMonth ->
-            eventDate = "$dayOfMonth/${month + 1}/$year" // Format the date
-        },
-        calendar.get(Calendar.YEAR),
-        calendar.get(Calendar.MONTH),
-        calendar.get(Calendar.DAY_OF_MONTH)
-    )
+fun CreateEventPage(navController: NavController, viewModel: EventViewModel) {
 
     val selected = remember {
         mutableIntStateOf(R.drawable.baseline_add_24)
     }
 
-    val scrollBehavior =
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
-    Scaffold(modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    Scaffold(
         topBar = {
             MyTopAppBar(navController, selected)
         },
@@ -126,7 +99,7 @@ fun CreateEventPage(
         ) {
 
             Text(
-                text = "Create Event",
+                text = stringResource(R.string.create_event),
                 fontFamily = displayFontFamily,
                 fontSize = 25.sp,
                 color = Color(red = 10, green = 16, blue = 69, alpha = 255),
@@ -134,141 +107,8 @@ fun CreateEventPage(
                 modifier = Modifier.padding(start = 30.dp)
             )
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentSize(Alignment.Center)
-            ) {
+                CreateEvent(navController = navController, viewModel = viewModel)
 
-
-                Card(
-                    modifier = Modifier
-                        .size(200.dp)
-                        .fillMaxWidth()
-                        .aspectRatio(1f)
-                        .clickable {
-                            // Trigger the image picker when the card is clicked
-                            launcher.launch("image/*")
-                        },
-                    shape = RoundedCornerShape(16.dp),
-                    elevation = 4.dp,
-                ) {
-                    eventImage?.let {
-                        Image(
-                            painter = rememberAsyncImagePainter(model = it),
-                            contentDescription = "Event Image",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(150.dp),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-                }
-            }
-
-            androidx.compose.material.TextField(
-                modifier = Modifier
-                    .padding(16.dp),
-                colors = androidx.compose.material.TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                ),
-                shape = RoundedCornerShape(20.dp),
-                value = eventName,
-                onValueChange = { eventName = it },
-                placeholder = {
-                    Text(
-                        text = "Event Name",
-                        color = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                        fontWeight = FontWeight.SemiBold
-                    )
-                },
-            )
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                androidx.compose.material.TextField(
-                    modifier = Modifier
-                        .padding(16.dp),
-                    colors = androidx.compose.material.TextFieldDefaults.textFieldColors(
-                        unfocusedIndicatorColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,
-
-                    ),
-                    shape = RoundedCornerShape(20.dp),
-                    value = eventDate,
-                    onValueChange = { eventDate = it },
-                    placeholder = {
-                        Text(
-                            text = "Event Date",
-                            color = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    },
-                    enabled = false
-                )
-                IconButton(onClick = { datePickerDialog.show() }) {
-                    Icon(
-                        modifier = Modifier.size(30.dp),
-                        painter = painterResource(id = R.drawable.fe_calendar),
-                        contentDescription = "Select Date"
-                    )
-                }
-            }
-
-
-            androidx.compose.material.TextField(
-                modifier = Modifier
-                    .padding(16.dp),
-                colors = androidx.compose.material.TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-
-                ),
-                shape = RoundedCornerShape(20.dp),
-                value = eventDetails,
-                onValueChange = { eventDetails = it },
-                placeholder = {
-                    Text(
-                        text = "Event Details",
-                        color = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                        fontWeight = FontWeight.SemiBold
-                    )
-                },
-            )
-
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentSize(Alignment.Center)
-            ) {
-                Button(
-                    onClick = {
-                        val event = Event(
-                            eventName = eventName,
-                            eventDetails = eventDetails,
-                            eventDate = eventDate,
-                            eventImage = eventImage?.toString(), // Save URI as a string
-
-                        )
-                        viewModel.addEvent(event)
-                        navController.navigate("home")
-
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(red = 255, green = 60, blue = 49, alpha = 255)
-                    )
-                ) {
-                    Text(
-                        text = "Create",
-                        fontFamily = displayFontFamily,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 25.sp
-                    )
-                }
-            }
 
         }
     }
