@@ -24,6 +24,12 @@
     <string name="event_date">Event Date</string>
     <string name="event_details">Event Details</string>
     <string name="join_event">Join Event</string>
+    <string name="profile_name">Your Name</string>
+    <string name="year">Year of Study</string>
+    <string name="department">Department</string>
+    <string name="interests">Interests</string>
+    <string name="save_profile">Save Profile</string>
+
 
 
 

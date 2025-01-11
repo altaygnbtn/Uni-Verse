@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -105,9 +106,11 @@ import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.altaygunbatan.uni_verse.R
 import com.altaygunbatan.uni_verse.dataClasses.Event
+import com.altaygunbatan.uni_verse.dataClasses.UserProfile
 import com.altaygunbatan.uni_verse.ui.theme.bodyFontFamily
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
 import com.altaygunbatan.uni_verse.viewModels.EventViewModel
+import com.altaygunbatan.uni_verse.viewModels.UserProfileViewModel
 
 import com.google.firebase.auth.FirebaseAuth
 import java.time.LocalDate
@@ -834,7 +837,7 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
                     ) {
                         Text(
                             text = stringResource(id = R.string.select_page),
-                            style = MaterialTheme.typography.headlineSmall,
+                            fontFamily = displayFontFamily,
                             modifier = Modifier.padding(bottom = 8.dp),
                             color = Color.White
                         )
@@ -1213,6 +1216,177 @@ fun JoinEventPageFilters(modifier: Modifier = Modifier, viewModel: EventViewMode
                 showFilterDialog.value = false
             }
         )
+    }
+
+}
+
+@Composable
+fun SaveProfileChanges(modifier: Modifier = Modifier, profileViewModel: UserProfileViewModel) {
+
+    val context = LocalContext.current // Get the context here
+
+    val profile by profileViewModel.profile.collectAsState()
+    var fullName by remember { mutableStateOf(profile?.fullName ?: "") }
+    var yearOfStudy by remember { mutableStateOf(profile?.yearOfStudy ?: "") }
+    var department by remember { mutableStateOf(profile?.department ?: "") }
+    var interests by remember { mutableStateOf(profile?.interests ?: "") }
+    var profilePictureUri by remember { mutableStateOf(profile?.profilePictureUri) }
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        profilePictureUri = uri.toString()
+    }
+
+    val selected = remember {
+        mutableIntStateOf(R.drawable.profile_button)
+    }
+
+    Row(
+        modifier = Modifier.fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween, // Space between image and text field
+
+
+    ) {
+        //profile picture picker from gallery
+        if (profilePictureUri != null) {        // show the profile picture
+            Image(
+                painter = rememberAsyncImagePainter(profilePictureUri),
+                contentDescription = "Profile Picture",
+                modifier = Modifier
+                    .size(150.dp) // Circle size
+                    .clip(CircleShape)
+                    .border(2.dp, Color.Gray, CircleShape) // border
+                    .clickable {
+                        launcher.launch("image/*") // image picker
+                    },
+                contentScale = ContentScale.Crop
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .size(150.dp)
+                    .clip(CircleShape)
+                    .border(2.dp, Color.Gray, CircleShape)
+                    .clickable {
+                        launcher.launch("image/*")
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.edit_profile),
+                    contentDescription = "edit profile"
+                )
+            }
+        }
+        androidx.compose.material.TextField(
+            modifier = Modifier
+                .weight(1f),
+            value = fullName,
+            onValueChange = {
+                fullName = it
+            },
+            colors = androidx.compose.material.TextFieldDefaults.textFieldColors(
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent
+            ),
+            shape = RoundedCornerShape(20.dp),
+            placeholder = { Text(stringResource(id = R.string.profile_name)) }
+
+        )
+    }
+    Spacer(modifier = Modifier.height(16.dp))
+
+
+
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    androidx.compose.material.TextField(
+        modifier = Modifier
+            .padding(16.dp),
+        colors = androidx.compose.material.TextFieldDefaults.textFieldColors(
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent
+        ),
+        shape = RoundedCornerShape(20.dp),
+        value = yearOfStudy,
+        onValueChange = { yearOfStudy = it },
+        placeholder = {
+            androidx.compose.material3.Text(
+                text = stringResource(id = R.string.year),
+                color = Color(red = 10, green = 16, blue = 69, alpha = 255),
+                fontWeight = FontWeight.SemiBold
+            )
+        },
+    )
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    androidx.compose.material.TextField(
+        modifier = Modifier
+            .padding(16.dp),
+        colors = androidx.compose.material.TextFieldDefaults.textFieldColors(
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent
+        ),
+        shape = RoundedCornerShape(20.dp),
+        value = department,
+        onValueChange = { department = it },
+        placeholder = {
+            androidx.compose.material3.Text(
+                text = stringResource(id = R.string.department),
+                color = Color(red = 10, green = 16, blue = 69, alpha = 255),
+                fontWeight = FontWeight.SemiBold
+            )
+        },
+    )
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    androidx.compose.material.TextField(
+        modifier = Modifier
+            .padding(16.dp),
+        colors = androidx.compose.material.TextFieldDefaults.textFieldColors(
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent
+        ),
+        shape = RoundedCornerShape(20.dp),
+        value = interests,
+        onValueChange = { interests = it },
+        placeholder = {
+            androidx.compose.material3.Text(
+                text = stringResource(id = R.string.interests),
+                color = Color(red = 10, green = 16, blue = 69, alpha = 255),
+                fontWeight = FontWeight.SemiBold
+            )
+        },
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    androidx.compose.material.Button(
+        onClick = {
+            val updatedProfile = UserProfile(
+                profilePictureUri = profilePictureUri,
+                fullName = fullName,
+                yearOfStudy = yearOfStudy,
+                department = department,
+                interests = interests
+            )
+            profileViewModel.updateUserProfile(updatedProfile)
+            Toast.makeText(context, "Your changes are saved!", Toast.LENGTH_SHORT).show()
+
+
+        },
+        colors = androidx.compose.material.ButtonDefaults.buttonColors(
+            backgroundColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
+            contentColor = Color.White
+        )
+    ) {
+        Text(stringResource(id = R.string.save_profile), color = Color.White)
     }
 
 }

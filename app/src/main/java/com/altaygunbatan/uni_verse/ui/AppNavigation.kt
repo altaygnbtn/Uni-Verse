@@ -26,32 +26,32 @@ fun AppNavigation(viewModel: EventViewModel, profileViewModel: UserProfileViewMo
 
 
 
-    NavHost(navController = navController, startDestination = "login"){
+    NavHost(navController = navController, startDestination = "login"){ //start destination is login page
 
 
         composable("login") {
-            LoginPage(navController = navController, onLoginSuccess = {navController.navigate("home")})
+            LoginPage(navController = navController, onLoginSuccess = {navController.navigate("home")}) //navigate to HomePage if successful
         }
         composable("signup") {
-            SignupPage(navController = navController, onSignupSuccess = {navController.navigate("login")})
+            SignupPage(navController = navController, onSignupSuccess = {navController.navigate("login")}) //navigate to SignupPage if successful
         }
         composable("forgot") {
-            ForgotPasswordPage(navController = navController)
+            ForgotPasswordPage(navController = navController) //navigate the ForgotPasswordPage
         }
         composable("home") {
-            HomePage(navController = navController, viewModel)
+            HomePage(navController = navController, viewModel)     //navigate the HomePage
         }
         composable ("map") {
-            MapPage(navController = navController, viewModel)
+            MapPage(navController = navController, viewModel)      //navigate to MapPage
         }
         composable ("event_create") {
-            CreateEventPage(navController = navController, viewModel = viewModel)
+            CreateEventPage(navController = navController, viewModel = viewModel)   //navigate to CreateEventPage
         }
         composable ("event_join") {
-            JoinEventPage(navController = navController, viewModel = viewModel)
+            JoinEventPage(navController = navController, viewModel = viewModel) //navigate to JoinEventPage
         }
         composable ("profile") {
-            ProfilePage(navController = navController, profileViewModel = profileViewModel)
+            ProfilePage(navController = navController, profileViewModel = profileViewModel) //navigate to ProfilePage
         }
 
 

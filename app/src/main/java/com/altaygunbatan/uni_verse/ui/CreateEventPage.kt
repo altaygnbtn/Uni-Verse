@@ -77,7 +77,7 @@ fun CreateEventPage(navController: NavController, viewModel: EventViewModel) {
 
     val selected = remember {
         mutableIntStateOf(R.drawable.baseline_add_24)
-    }
+    } // plus button is selected
 
     Scaffold(
         topBar = {
