@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -89,7 +90,7 @@ fun JoinEventPage(navController: NavController,
         ) {
 
             Text(
-                text = "Join Event",
+                text = stringResource(id = R.string.join_event),
                 fontFamily = displayFontFamily,
                 fontSize = 25.sp,
                 color = Color(red = 10, green = 16, blue = 69, alpha = 255),
@@ -97,90 +98,10 @@ fun JoinEventPage(navController: NavController,
                 modifier = Modifier.padding(start = 30.dp, top = 5.dp)
             )
             Spacer(modifier = Modifier.height(20.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentSize(Alignment.Center)
-            ) {
-                HomeTextField(viewModel)
-            }
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp), // Space between the buttons
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .size(width = 100.dp, height = 20.dp)
-                    .padding(start = 20.dp)
-            ) {
 
-                IconButton(
-                    onClick = {
-                        selected.value = R.drawable.filter
-                        showFilterDialog.value = true
-                    },
-                    modifier = Modifier.weight(1f)
-                ) {
-
-                    Icon(
-                        painter = painterResource(id = R.drawable.filter),
-                        contentDescription = "Filter Button",
-                        modifier = Modifier.size(30.dp),
-                        tint = if (selected.value == R.drawable.filter) Color.Blue else Color.Gray
-                    )
-                }
-
-                IconButton(
-                    onClick = {
-                        selected.value = R.drawable.liked_event
-                        viewModel.toggleShowOnlyLiked()
-                    },
-                    modifier = Modifier.weight(1f)
-                ) {
-
-                    Icon(
-                        painter = painterResource(id = R.drawable.liked_event),
-                        contentDescription = "Liked Events Button",
-                        modifier = Modifier.size(30.dp),
-                        tint = if (selected.value == R.drawable.liked_event) Color.Blue else Color.Gray
-                    )
-                }
+            JoinEventPageFilters(viewModel = viewModel)
 
 
-            }
-
-
-            // LazyColumn for displaying filtered events
-            if (events.isEmpty()) {
-                Text(
-                    text = "No events available to join",
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    textAlign = TextAlign.Center
-                )
-            } else {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(start = 20.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(events) { event ->
-                        JoinEventCard(event, onLikeClicked = { viewModel.toggleLike(event) })
-                    }
-                }
-
-            }
-            if (showFilterDialog.value) {
-                FilterDialog(
-                    onDismiss = { showFilterDialog.value = false },
-                    onFilterByName = {
-                        viewModel.filterByName()
-                        showFilterDialog.value = false
-                    },
-                    onFilterByDate = {
-                        viewModel.filterByDate()
-                        showFilterDialog.value = false
-                    }
-                )
-            }
 
         }
     }

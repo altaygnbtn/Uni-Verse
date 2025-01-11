@@ -1,6 +1,7 @@
 package com.altaygunbatan.uni_verse.ui
 
 import android.provider.ContactsContract.CommonDataKinds.Email
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -54,176 +56,18 @@ import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun LoginPage( navController: NavController, onLoginSuccess: () -> Unit) {
-    var isSelected by rememberSaveable { mutableStateOf(false) }
-    var password by rememberSaveable { mutableStateOf("") }
-    var email by rememberSaveable { mutableStateOf("") }
-    var errorMessage by remember { mutableStateOf("") }
-    var passwordVisibility by remember { mutableStateOf(false)}
 
-    val icon = if (passwordVisibility){
-       painterResource(id = R.drawable.baseline_visibility_24)
-    }
-    else {
-        painterResource(id = R.drawable.baseline_visibility_off_24)
-    }
+
 
     Column(
         modifier = Modifier.fillMaxSize()
             .background(color = Color(red = 242, green = 244, blue = 243)),
     ){
-        Text(
-            text = "LOGIN",
-            fontFamily = displayFontFamily,
-            fontSize = 32.sp,
-            modifier = Modifier.padding(start = 32.dp, top = 45.dp,)
-        )
+        LoginPageEmailText()
 
-        Spacer(modifier = Modifier.height(120.dp))
+        LoginToHomePage(onLoginSuccess = onLoginSuccess)
 
-        Text(
-            text = "E-mail",
-            fontFamily = bodyFontFamily,
-            fontSize = 22.sp,
-            color = Color(red = 10, green = 16, blue = 69, alpha = 255),
-            modifier = Modifier.padding(start = 46.dp))
-
-        Spacer(modifier = Modifier.height(20.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentSize(Alignment.Center)
-        ){
-        TextField(
-            modifier = Modifier.size(width = 345.dp, height = 55.dp),
-            value = email,
-            onValueChange = {
-                email = it
-                },
-            colors = TextFieldDefaults.textFieldColors(
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent
-            ),
-            shape = RoundedCornerShape(20.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(50.dp))
-
-        Text(
-            text = "Password",
-            fontFamily = bodyFontFamily,
-            fontSize = 22.sp,
-            color = Color(red = 10, green = 16, blue = 69, alpha = 255),
-            modifier = Modifier.padding(start = 46.dp)
-        )
-
-        Spacer(modifier = Modifier.height(20.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentSize(Alignment.Center)
-        ) {
-            TextField(
-                modifier = Modifier.size(width = 345.dp, height = 55.dp),
-                value =password,
-                onValueChange = {
-                    password = it
-                },
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent
-                ),
-                shape = RoundedCornerShape(20.dp),
-                trailingIcon = {
-                    IconButton(onClick = {
-                        passwordVisibility = !passwordVisibility
-                    }) {
-                        Icon(
-                            painter = icon,
-                            contentDescription = "Toggle password visibility"
-                        )
-                    }
-                }, keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password
-                ),
-                visualTransformation = if(passwordVisibility) VisualTransformation.None
-                else PasswordVisualTransformation()
-            )
-        }
-        Spacer(modifier = Modifier.height(30.dp))
-        
-        Row (verticalAlignment = Alignment.CenterVertically){
-            RadioButton(
-                selected = isSelected,
-                onClick = { isSelected = !isSelected },
-                modifier = Modifier.padding(start = 10.dp)
-            )
-            Text("Remember me",
-                fontFamily = bodyFontFamily,
-                color = Color(red = 10, green = 16, blue = 69, alpha = 255))
-        }
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentSize(Alignment.Center)
-        ) {
-
-            Button(
-                onClick = {
-                    signInWithEmailAndPassword(email, password) { success, error ->
-                        if (success) {
-                            onLoginSuccess()
-                        } else {
-                            errorMessage = error ?: "An unknown error occurred"
-                        }
-                    }
-                },
-                colors = androidx.compose.material.ButtonDefaults.buttonColors(
-                    backgroundColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(20.dp),
-                modifier = Modifier
-                    .size(width = 345.dp, height = 45.dp)
-            )
-            {
-                Text(text = "SIGN IN",
-                    fontFamily = displayFontFamily,
-                    fontSize = 22.sp)
-            }
-        }
-
-        Spacer(modifier = Modifier.height(10.dp))
-        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
-            TextButton(onClick = {
-                navController.navigate("forgot")
-            }
-            )
-            {
-                Text(text = "Forgot Password?",
-                    fontFamily = displayFontFamily,
-                    fontSize = 16.sp,
-                    color = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                    modifier = Modifier.padding(end = 20.dp))
-
-            }
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
-            TextButton(onClick = {
-                navController.navigate("signup")
-            }) {
-                Text("Don't have an account?",
-                    fontFamily = displayFontFamily,
-                    fontSize = 16.sp,
-                    color = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                    modifier = Modifier.padding(end = 20.dp))
-
-            }
-        }
+        AccountForgotText(navController = navController)
     }
 }
 

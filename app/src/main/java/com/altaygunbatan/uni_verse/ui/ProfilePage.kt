@@ -46,6 +46,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -62,20 +63,7 @@ import com.altaygunbatan.uni_verse.viewModels.UserProfileViewModel
 
 @Composable
 fun ProfilePage(profileViewModel: UserProfileViewModel, navController: NavController) {
-    val context = LocalContext.current // Get the context here
 
-    val profile by profileViewModel.profile.collectAsState()
-    var fullName by remember { mutableStateOf(profile?.fullName ?: "") }
-    var yearOfStudy by remember { mutableStateOf(profile?.yearOfStudy ?: "") }
-    var department by remember { mutableStateOf(profile?.department ?: "") }
-    var interests by remember { mutableStateOf(profile?.interests ?: "") }
-    var profilePictureUri by remember { mutableStateOf(profile?.profilePictureUri) }
-
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) { uri ->
-        profilePictureUri = uri.toString()
-    }
 
     val selected = remember {
         mutableIntStateOf(R.drawable.profile_button)
@@ -104,151 +92,7 @@ fun ProfilePage(profileViewModel: UserProfileViewModel, navController: NavContro
         )
 
         {
-            Row(
-                modifier = Modifier.fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween, // Space between image and text field
-
-
-            ) {
-
-                if (profilePictureUri != null) {
-                    Image(
-                        painter = rememberAsyncImagePainter(profilePictureUri),
-                        contentDescription = "Profile Picture",
-                        modifier = Modifier
-                            .size(150.dp) // Circle size
-                            .clip(CircleShape) // Clip the image to circle
-                            .border(2.dp, Color.Gray, CircleShape) // Optional border
-                            .clickable {
-                                launcher.launch("image/*") // Open image picker
-                            },
-                        contentScale = ContentScale.Crop
-                    )
-                } else {
-                    Box(
-                        modifier = Modifier
-                            .size(150.dp)
-                            .clip(CircleShape)
-                            .border(2.dp, Color.Gray, CircleShape)
-                            .clickable {
-                                launcher.launch("image/*") // Open image picker
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.edit_profile),
-                            contentDescription = "edit profile"
-                        )
-                    }
-                }
-                TextField(
-                    modifier = Modifier
-                        .weight(1f),
-                    value = fullName,
-                    onValueChange = {
-                        fullName = it
-                    },
-                    colors = TextFieldDefaults.textFieldColors(
-                        unfocusedIndicatorColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent
-                    ),
-                    shape = RoundedCornerShape(20.dp),
-                    placeholder = { Text("Your Name") }
-
-                )
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-
-
-
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-            TextField(
-                modifier = Modifier
-                    .padding(16.dp),
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent
-                ),
-                shape = RoundedCornerShape(20.dp),
-                value = yearOfStudy,
-                onValueChange = { yearOfStudy = it },
-                placeholder = {
-                    androidx.compose.material3.Text(
-                        text = "Year of Study",
-                        color = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                        fontWeight = FontWeight.SemiBold
-                    )
-                },
-            )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-            TextField(
-                modifier = Modifier
-                    .padding(16.dp),
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent
-                ),
-                shape = RoundedCornerShape(20.dp),
-                value = department,
-                onValueChange = { department = it },
-                placeholder = {
-                    androidx.compose.material3.Text(
-                        text = "Department",
-                        color = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                        fontWeight = FontWeight.SemiBold
-                    )
-                },
-            )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-            TextField(
-                modifier = Modifier
-                    .padding(16.dp),
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent
-                ),
-                shape = RoundedCornerShape(20.dp),
-                value = interests,
-                onValueChange = { interests = it },
-                placeholder = {
-                    androidx.compose.material3.Text(
-                        text = "Interests",
-                        color = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                        fontWeight = FontWeight.SemiBold
-                    )
-                },
-            )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Button(onClick = {
-                    val updatedProfile = UserProfile(
-                        profilePictureUri = profilePictureUri,
-                        fullName = fullName,
-                        yearOfStudy = yearOfStudy,
-                        department = department,
-                        interests = interests
-                    )
-                    profileViewModel.updateUserProfile(updatedProfile)
-                    Toast.makeText(context, "Your changes are saved", Toast.LENGTH_SHORT).show()
-
-
-                },
-                    colors = androidx.compose.material.ButtonDefaults.buttonColors(
-                        backgroundColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                        contentColor = Color.White
-                    )
-                ) {
-                    Text("Save Profile", color = Color.White)
-                }
+            SaveProfileChanges(profileViewModel = profileViewModel)
 
         }
     }

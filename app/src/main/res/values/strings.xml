@@ -1,3 +1,39 @@
 <resources>
     <string name="app_name">Uni-Verse</string>
+    <string name="login">LOGIN</string>
+    <string name="email">E-Mail</string>
+    <string name="password">Password</string>
+    <string name="remember">Remember me</string>
+    <string name="signIn">SIGN IN</string>
+    <string name="forgot">Forgot Password?</string>
+    <string name="account">Don\'t have an account?</string>
+    <string name="signUp">SIGN UP</string>
+    <string name="createAccount">Create Account</string>
+    <string name="preview">Preview</string>
+    <string name="back">Back</string>
+    <string name="forgot_password">FORGOT PASSWORD</string>
+    <string name="forgot_text">No problem! Enter the e-mail address associated with your account. We\'ll send you a secure link to reset your password</string>
+    <string name="register">Register E-Mail</string>
+    <string name="send_link">SEND LINK</string>
+    <string name="select_page">Please select a page to go.</string>
+    <string name="create_event_page">Create Event</string>
+    <string name="joint_event_page">Join Event</string>
+    <string name="my_events">My Events</string>
+    <string name="create_event">Create Event</string>
+    <string name="event_name">Event Name</string>
+    <string name="event_date">Event Date</string>
+    <string name="event_details">Event Details</string>
+    <string name="join_event">Join Event</string>
+    <string name="profile_name">Your Name</string>
+    <string name="year">Year of Study</string>
+    <string name="department">Department</string>
+    <string name="interests">Interests</string>
+    <string name="save_profile">Save Profile</string>
+
+
+
+
+
+
+
 </resources>

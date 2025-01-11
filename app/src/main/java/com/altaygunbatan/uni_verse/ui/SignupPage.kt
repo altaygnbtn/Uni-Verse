@@ -40,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -55,160 +56,16 @@ import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
 
 @Composable
 fun SignupPage( navController: NavController, onSignupSuccess: () -> Unit) {
-    var password by rememberSaveable { mutableStateOf("") }
-    var email by rememberSaveable { mutableStateOf("") }
-    var errorMessage by remember { mutableStateOf("") }
-    var passwordVisibility by remember { mutableStateOf(false)}
 
-    val icon = if (passwordVisibility){
-        painterResource(id = R.drawable.baseline_visibility_24)
-    }
-    else {
-        painterResource(id = R.drawable.baseline_visibility_off_24)
-    }
     Column(
         modifier = Modifier.fillMaxSize()
             .background(color = Color(red = 242, green = 244, blue = 243))
     ){
-        Text(
-            text = "SIGN UP",
-            fontFamily = displayFontFamily,
-            color = Color(red = 10, green = 16, blue = 69, alpha = 255),
-            fontSize = 32.sp,
-            modifier = Modifier.padding(start = 32.dp, top = 45.dp)
-        )
+        SignUpPageEmailText()
 
-        Spacer(modifier = Modifier.height(120.dp))
+        SignUpPageToLogin(onSignupSuccess = onSignupSuccess)
 
-        Text(
-            text = "E-mail",
-            fontFamily = bodyFontFamily,
-            fontSize = 22.sp,
-            modifier = Modifier.padding(start = 46.dp))
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentSize(Alignment.Center)
-        ) {
-            TextField(
-                modifier = Modifier.size(width = 345.dp, height = 55.dp),
-                value = email,
-                onValueChange = {
-                    email = it
-                },
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent
-                ),
-                shape = RoundedCornerShape(20.dp)
-            )
-        }
-        Spacer(modifier = Modifier.height(50.dp))
-
-        Text(
-            text = "Password",
-            fontFamily = bodyFontFamily,
-            fontSize = 22.sp,
-            modifier = Modifier.padding(start = 46.dp),
-
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentSize(Alignment.Center)
-        ){
-
-        TextField(
-            modifier = Modifier.size(width = 345.dp, height = 55.dp),
-            value =password,
-            onValueChange = {
-                password = it
-            },
-            colors = TextFieldDefaults.textFieldColors(
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent
-            ),
-            shape = RoundedCornerShape(20.dp),
-            trailingIcon = {
-                IconButton(onClick = {
-                    passwordVisibility = !passwordVisibility
-                }) {
-                    Icon(
-                        painter = icon,
-                        contentDescription = "Toggle password visibility"
-                    )
-                }
-            }, keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password
-            ),
-            visualTransformation = if(passwordVisibility) VisualTransformation.None
-            else PasswordVisualTransformation()
-        )
-}
-
-        Spacer(modifier = Modifier.height(60.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentSize(Alignment.Center)
-        ) {
-            Button(
-                onClick = {
-                    signUpWithEmailAndPassword(email, password) { success, error ->
-                        if (success) {
-                            onSignupSuccess()
-                        } else {
-                            errorMessage = error ?: "An unknown error occurred"
-                        }
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color(red = 10, green = 16, blue = 69, alpha = 255),
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(20.dp),
-                modifier = Modifier.size(width = 345.dp, height = 47.dp)
-            ) {
-                Text(
-                    text = "Create Account",
-                    fontFamily = displayFontFamily,
-                    fontSize = 22.sp
-                )
-            }
-        }
-            if (errorMessage.isNotEmpty()) {
-                Text(
-                    text = errorMessage,
-                    color = Color.Red,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
-
-
-            Spacer(modifier = Modifier.height(30.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentSize(Alignment.Center)
-        ) {
-            MyButton2("PREVIEW", navController)
-
-        }
-        Spacer(modifier = Modifier.height(100.dp))
-
-        TextButton(onClick = {
-            navController.navigate("login") },
-            modifier = Modifier.padding(start = 19.dp)) {
-            Text(text = "Back",
-                fontFamily = displayFontFamily,
-                fontSize = 15.sp,
-                color = Color(red = 10, green = 16, blue = 69, alpha = 255))
-        }
+        PreviewOrLogin(navController = navController)
     }
 
 
