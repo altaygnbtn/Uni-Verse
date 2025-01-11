@@ -695,7 +695,7 @@ fun MyTopAppBar(navController: NavController, selected: MutableState<Int>) {
                     modifier = Modifier.size(width = 20.dp, height = 20.dp),
                     painter = painterResource(id = R.drawable.profile_button),
                     contentDescription = "Profile",
-                    tint = if (selected.value == R.drawable.profile_button) Color(red = 255, green = 81, blue = 71, alpha = 255) else Color.White
+                    tint = if (selected.value == R.drawable.profile_button) Color(red = 255, green = 81, blue = 71, alpha = 255) else Color.Gray
                 )
 
             }

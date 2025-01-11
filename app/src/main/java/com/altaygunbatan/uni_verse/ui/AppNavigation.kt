@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.altaygunbatan.uni_verse.viewModels.EventViewModel
 import com.altaygunbatan.uni_verse.viewModels.UserProfileViewModel
 import com.google.android.gms.maps.model.LatLng
+import okhttp3.internal.http2.Settings
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -52,6 +53,9 @@ fun AppNavigation(viewModel: EventViewModel, profileViewModel: UserProfileViewMo
         }
         composable ("profile") {
             ProfilePage(navController = navController, profileViewModel = profileViewModel) //navigate to ProfilePage
+        }
+        composable ("settings") {
+            SettingsPage(navController = navController) //navigate to SettingsPage
         }
 
 
