@@ -61,6 +61,7 @@ import androidx.compose.material.icons.outlined.FavoriteBorder
 
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -1441,6 +1442,8 @@ fun SaveProfileChanges(modifier: Modifier = Modifier, profileViewModel: UserProf
 
 @Composable
 fun EventCard(event: Event, onDelete: () -> Unit) {
+    val context = LocalContext.current // Get the context here
+
     Card(
         modifier = Modifier.size(300.dp),
         elevation = 4.dp,
@@ -1467,7 +1470,10 @@ fun EventCard(event: Event, onDelete: () -> Unit) {
                 Text(text = event.eventDetails, style = MaterialTheme.typography.bodyLarge, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
                 Text(text = "Date: ${event.eventDate}", style = MaterialTheme.typography.bodyMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
                 Text(text = "Location: ${event.eventLocation}", style = MaterialTheme.typography.bodyMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
-                IconButton(onClick = onDelete, modifier = Modifier.align(Alignment.End)) {
+                IconButton(onClick = { onDelete()
+                    Toast.makeText(context, " Your event ${event.eventName} is deleted", Toast.LENGTH_SHORT).show()}
+
+                    , modifier = Modifier.align(Alignment.End)) {
                     Icon(imageVector = Icons.Default.Delete, contentDescription = "delete button", tint = Color.Red)
                 }
             }
@@ -1511,11 +1517,17 @@ fun JoinEventCard(event: Event, onLikeClicked: () -> Unit) {
                     Button(onClick = {
                         // Logic for joining event
                         Toast.makeText(context, "You joined the event: ${event.eventName}", Toast.LENGTH_SHORT).show()
-                    }) {
-                        Text("Join")
+                    },
+                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = Color(red = 10, green = 16, blue = 69, alpha = 255), contentColor = Color.White)
+                    ) {
+                        Text("Join",
+                            color = Color.White)
                     }
                     // Like button
-                    IconButton(onClick = onLikeClicked,
+                    IconButton(onClick = {
+                        onLikeClicked()
+                        Toast.makeText(context, "You liked the ${event.eventName}", Toast.LENGTH_SHORT).show()
+                    }
                     ) {
                         Icon(
                             imageVector = if (event.isLiked) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
