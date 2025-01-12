@@ -76,7 +76,7 @@ import java.util.Calendar
 fun CreateEventPage(navController: NavController, viewModel: EventViewModel) {
 
     val selected = remember {
-        mutableIntStateOf(R.drawable.baseline_add_24)
+        mutableIntStateOf(R.drawable.navigation_plus)
     } // plus button is selected
 
     Scaffold(

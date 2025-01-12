@@ -845,9 +845,12 @@ fun MyBottomAppBar(navController: NavController, selected: MutableState<Int>
                 contentColor = Color.Red
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.baseline_add_24),
-                    contentDescription = "Add Button"
-                )
+                    painter = painterResource(id = R.drawable.navigation_plus),
+                    contentDescription = "Add Button",
+                    tint = if (selected.value == R.drawable.navigation_plus) Color(red = 255, green = 81, blue = 71, alpha = 255) else Color.White,
+                    modifier = Modifier.size(40.dp),
+
+                    )
             }
         }
         if (showPopup) {

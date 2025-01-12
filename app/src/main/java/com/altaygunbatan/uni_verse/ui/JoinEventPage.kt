@@ -65,7 +65,7 @@ fun JoinEventPage(navController: NavController,
     val showFilterDialog = remember { mutableStateOf(false) }
 
     val selected = remember {
-        mutableIntStateOf(R.drawable.baseline_add_24)
+        mutableIntStateOf(R.drawable.navigation_plus)
     }
 
 
