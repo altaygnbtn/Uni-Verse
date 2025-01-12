@@ -72,7 +72,7 @@ fun JoinEventPage(navController: NavController,
 
     Scaffold(
         topBar = {
-            MyTopAppBar(navController, selected)
+            MyTopAppBar(navController, selected, viewModel)
         },
         bottomBar = {
             MyBottomAppBar(navController, selected)

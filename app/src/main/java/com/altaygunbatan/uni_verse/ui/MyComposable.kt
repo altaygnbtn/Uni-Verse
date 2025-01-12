@@ -46,6 +46,8 @@ import androidx.compose.material.ButtonDefaults
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.RadioButton
 
 //noinspection UsingMaterialAndMaterial3Libraries
@@ -669,7 +671,12 @@ fun HomeTextField(viewModel: EventViewModel){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTopAppBar(navController: NavController, selected: MutableState<Int>) {
+fun MyTopAppBar(navController: NavController, selected: MutableState<Int>, viewModel: EventViewModel) {
+
+    var expanded by remember { mutableStateOf(false) }
+    var isRed by remember { mutableStateOf(false) } //for the notification button
+
+
     TopAppBar(
         title = {
             androidx.compose.material3.Text(
@@ -680,15 +687,33 @@ fun MyTopAppBar(navController: NavController, selected: MutableState<Int>) {
         actions = {
 //
             IconButton(
-                onClick = { navController.navigate("notification") },
+                onClick = { expanded = !expanded
+                            isRed = ! isRed
+                }
             ) {
                 Icon(
                     modifier = Modifier.size(width = 20.dp, height = 20.dp),
                     painter = painterResource(id = R.drawable.notification_button),
                     contentDescription = "notification button",
-                    tint = if (selected.value == R.drawable.notification_button) Color(red = 255, green = 81, blue = 71, alpha = 255) else Color.White
+                    tint = if (isRed) Color.Red else Color.Gray
                 )
 
+            }
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                if (viewModel.notifications.isEmpty()) {
+                    DropdownMenuItem(onClick = {}) {
+                        Text("No notifications")
+                    }
+                } else {
+                    viewModel.notifications.forEach { notification ->
+                        DropdownMenuItem(onClick = {}) {
+                            Text(notification)
+                        }
+                    }
+                }
             }
             IconButton(onClick = { navController.navigate("profile") }) {
                 Icon(
@@ -954,6 +979,7 @@ fun CreateEvent(modifier: Modifier = Modifier, navController: NavController, vie
     var eventName by remember { mutableStateOf("") }
     var eventDetails by remember { mutableStateOf("") }
     var eventDate by remember { mutableStateOf("") }
+    var eventLocation by remember { mutableStateOf("") }
     val context = LocalContext.current
 
     val calendar = Calendar.getInstance()
@@ -981,6 +1007,7 @@ fun CreateEvent(modifier: Modifier = Modifier, navController: NavController, vie
         fontWeight = FontWeight.Bold,
         modifier = Modifier.padding(start = 30.dp)
     )
+    Spacer(modifier = Modifier.height(5.dp))
 
     Box(
         modifier = Modifier
@@ -1063,6 +1090,24 @@ fun CreateEvent(modifier: Modifier = Modifier, navController: NavController, vie
             )
         }
     }
+    androidx.compose.material.TextField(
+        modifier = Modifier
+            .padding(16.dp),
+        colors = androidx.compose.material.TextFieldDefaults.textFieldColors(
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+        ),
+        shape = RoundedCornerShape(20.dp),
+        value = eventLocation,
+        onValueChange = { eventLocation = it },
+        placeholder = {
+            androidx.compose.material3.Text(
+                text = stringResource(id = R.string.event_location),
+                color = Color(red = 10, green = 16, blue = 69, alpha = 255),
+                fontWeight = FontWeight.SemiBold
+            )
+        },
+    )
 
 
     androidx.compose.material.TextField(
@@ -1095,16 +1140,18 @@ fun CreateEvent(modifier: Modifier = Modifier, navController: NavController, vie
                     eventName = eventName,
                     eventDetails = eventDetails,
                     eventDate = eventDate,
+                    eventLocation = eventLocation,
                     eventImage = eventImage?.toString(), // Save URI as a string
 
                 )
                 viewModel.addEvent(event)
+
                 navController.navigate("home")
 
             },
             colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                containerColor = Color(red = 255, green = 60, blue = 49, alpha = 255)
-            )
+                containerColor = Color(red = 255, green = 81, blue = 71, alpha = 255)
+            ),
         ) {
             androidx.compose.material3.Text(
                 text = "Create",
@@ -1416,11 +1463,12 @@ fun EventCard(event: Event, onDelete: () -> Unit) {
 ,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = event.eventName, style = MaterialTheme.typography.headlineMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
-                Text(text = event.eventDetails, style = MaterialTheme.typography.bodyMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
-                Text(text = "Date: ${event.eventDate}", style = MaterialTheme.typography.bodySmall, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
+                Text(text = event.eventName, style = MaterialTheme.typography.headlineLarge, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
+                Text(text = event.eventDetails, style = MaterialTheme.typography.bodyLarge, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
+                Text(text = "Date: ${event.eventDate}", style = MaterialTheme.typography.bodyMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
+                Text(text = "Location: ${event.eventLocation}", style = MaterialTheme.typography.bodyMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
                 IconButton(onClick = onDelete, modifier = Modifier.align(Alignment.End)) {
-                    Icon(imageVector = Icons.Default.Delete, contentDescription = "delete button")
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = "delete button", tint = Color.Red)
                 }
             }
 
@@ -1456,9 +1504,10 @@ fun JoinEventCard(event: Event, onLikeClicked: () -> Unit) {
 //                    .background(Color.Black.copy(alpha = 0.6f)),
                     ,verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = event.eventName, style = MaterialTheme.typography.headlineMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
-                    Text(text = event.eventDetails, style = MaterialTheme.typography.bodyMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
-                    Text(text = "Date: ${event.eventDate}", style = MaterialTheme.typography.bodySmall, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
+                    Text(text = event.eventName, style = MaterialTheme.typography.headlineLarge, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
+                    Text(text = event.eventDetails, style = MaterialTheme.typography.bodyLarge, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
+                    Text(text = "Date: ${event.eventDate}", style = MaterialTheme.typography.bodyMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
+                    Text(text = "Location: ${event.eventLocation}", style = MaterialTheme.typography.bodyMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
                     Button(onClick = {
                         // Logic for joining event
                         Toast.makeText(context, "You joined the event: ${event.eventName}", Toast.LENGTH_SHORT).show()
@@ -1466,7 +1515,8 @@ fun JoinEventCard(event: Event, onLikeClicked: () -> Unit) {
                         Text("Join")
                     }
                     // Like button
-                    IconButton(onClick = onLikeClicked) {
+                    IconButton(onClick = onLikeClicked,
+                    ) {
                         Icon(
                             imageVector = if (event.isLiked) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                             contentDescription = "Like Event"

@@ -30,9 +30,10 @@ import androidx.navigation.NavController
 import com.altaygunbatan.uni_verse.R
 import com.altaygunbatan.uni_verse.ui.theme.bodyFontFamily
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
+import com.altaygunbatan.uni_verse.viewModels.EventViewModel
 
 @Composable
-fun SettingsPage(navController: NavController) {
+fun SettingsPage(navController: NavController, viewModel: EventViewModel) {
 
 
     val selected = remember {
@@ -41,7 +42,7 @@ fun SettingsPage(navController: NavController) {
 
     Scaffold(
         topBar = {
-            MyTopAppBar(navController,selected)
+            MyTopAppBar(navController,selected, viewModel)
         },
         bottomBar = {
             MyBottomAppBar(navController, selected)

@@ -8,7 +8,7 @@ import com.altaygunbatan.uni_verse.dataClasses.Event
 import com.altaygunbatan.uni_verse.dataClasses.UserProfile
 
 
-@Database(entities = [Event::class, UserProfile::class], version = 9) // Increment version
+@Database(entities = [Event::class, UserProfile::class], version = 10) // Increment version
 abstract class AppDatabase : RoomDatabase() {
     abstract fun eventDao(): EventDao
     abstract fun userProfileDao(): UserProfileDao // Add DAO for UserProfile

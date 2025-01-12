@@ -53,13 +53,13 @@ fun AppNavigation(viewModel: EventViewModel, profileViewModel: UserProfileViewMo
             JoinEventPage(navController = navController, viewModel = viewModel) //navigate to JoinEventPage
         }
         composable ("profile") {
-            ProfilePage(navController = navController, profileViewModel = profileViewModel) //navigate to ProfilePage
+            ProfilePage(navController = navController, profileViewModel = profileViewModel, viewModel = viewModel) //navigate to ProfilePage
         }
         composable ("settings") {
-            SettingsPage(navController = navController) //navigate to SettingsPage
+            SettingsPage(navController = navController, viewModel = viewModel) //navigate to SettingsPage
         }
         composable ("chat") {
-            ChatPage(navController = navController) //navigate to SettingsPage
+            ChatPage(navController = navController, viewModel = viewModel) //navigate to SettingsPage
         }
 
 
