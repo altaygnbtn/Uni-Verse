@@ -591,7 +591,7 @@ fun ForgotPasswordPageToSendLink(modifier: Modifier = Modifier) {
 
 
 @Composable
-fun ForgotPasswordPagrBackButton(modifier: Modifier = Modifier, navController: NavController) {
+fun ForgotPasswordPageBackButton(modifier: Modifier = Modifier, navController: NavController) {
 
     TextButton(
         onClick = {
@@ -1150,8 +1150,8 @@ fun CreateEvent(modifier: Modifier = Modifier, navController: NavController, vie
 
                 )
                 viewModel.addEvent(event)
-
-                navController.navigate("home")
+                Toast.makeText(context, "$eventName is created", Toast.LENGTH_SHORT).show()
+//                navController.navigate("home")
 
             },
             colors = androidx.compose.material3.ButtonDefaults.buttonColors(
@@ -1447,6 +1447,8 @@ fun SaveProfileChanges(modifier: Modifier = Modifier, profileViewModel: UserProf
 @Composable
 fun EventCard(event: Event, onDelete: () -> Unit) {
     val context = LocalContext.current // Get the context here
+    var showDialog by remember { mutableStateOf(false) }  // Controls AlertDialog visibility
+
 
     Card(
         modifier = Modifier.size(300.dp),
@@ -1474,8 +1476,11 @@ fun EventCard(event: Event, onDelete: () -> Unit) {
                 Text(text = event.eventDetails, style = MaterialTheme.typography.bodyLarge, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
                 Text(text = "Date: ${event.eventDate}", style = MaterialTheme.typography.bodyMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
                 Text(text = "Location: ${event.eventLocation}", style = MaterialTheme.typography.bodyMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
-                IconButton(onClick = { onDelete()
-                    Toast.makeText(context, " Your event ${event.eventName} is deleted", Toast.LENGTH_SHORT).show()}
+                IconButton(onClick = {
+//                    onDelete()
+//                    Toast.makeText(context, " Your event ${event.eventName} is deleted", Toast.LENGTH_SHORT).show()
+                    showDialog = true
+                                     }
 
                     , modifier = Modifier.align(Alignment.End)) {
                     Icon(imageVector = Icons.Default.Delete, contentDescription = "delete button", tint = Color.Red)
@@ -1484,11 +1489,40 @@ fun EventCard(event: Event, onDelete: () -> Unit) {
 
         }
     }
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },  // Close dialog if tapped outside
+            title = { Text(text = "Delete Confirmation") },
+            text = { Text("Are you sure you want to delete the ${event.eventName}?") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onDelete()  // Execute the delete action
+                        Toast.makeText(context, "The ${event.eventName} is deleted", Toast.LENGTH_SHORT).show()  // Show Toast
+                        showDialog = false  // Close the dialog
+                    }
+                ) {
+                    Text("Delete", color = Color.Red)
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showDialog = false  // Close the dialog without deleting
+                    }
+                ) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
 }
 
 @Composable
 fun JoinEventCard(event: Event, onLikeClicked: () -> Unit) {
     val context = LocalContext.current // Get the context here
+
+    var isJoined by remember { mutableStateOf(false) }  // State to track button status
 
     Card(
         modifier = Modifier
@@ -1519,12 +1553,17 @@ fun JoinEventCard(event: Event, onLikeClicked: () -> Unit) {
                     Text(text = "Date: ${event.eventDate}", style = MaterialTheme.typography.bodyMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
                     Text(text = "Location: ${event.eventLocation}", style = MaterialTheme.typography.bodyMedium, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = displayFontFamily)
                     Button(onClick = {
+                        isJoined = !isJoined
                         // Logic for joining event
                         Toast.makeText(context, "You joined the event: ${event.eventName}", Toast.LENGTH_SHORT).show()
                     },
-                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = Color(red = 10, green = 16, blue = 69, alpha = 255), contentColor = Color.White)
-                    ) {
-                        Text("Join",
+//                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = Color(red = 10, green = 16, blue = 69, alpha = 255), contentColor = Color.White)
+                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                            containerColor = if (isJoined) Color.Gray else Color(red = 10, green = 16, blue = 69, alpha = 255)
+
+                    )
+                    ) {  //handle join button
+                        Text(text = if (isJoined) "Joined" else "Join",
                             color = Color.White)
                     }
                     // Like button
