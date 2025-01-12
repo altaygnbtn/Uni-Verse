@@ -33,10 +33,11 @@ import com.altaygunbatan.uni_verse.ui.MyBottomAppBar
 import com.altaygunbatan.uni_verse.ui.MyTopAppBar
 import com.altaygunbatan.uni_verse.ui.theme.bodyFontFamily
 import com.altaygunbatan.uni_verse.ui.theme.displayFontFamily
+import com.altaygunbatan.uni_verse.viewModels.EventViewModel
 
 
 @Composable
-fun ChatPage(navController: NavController) {
+fun ChatPage(navController: NavController, viewModel: EventViewModel) {
 
     val selected = remember {
         mutableIntStateOf(R.drawable.chat_button)
@@ -44,7 +45,7 @@ fun ChatPage(navController: NavController) {
 
     Scaffold(
         topBar = {
-            MyTopAppBar(navController, selected)
+            MyTopAppBar(navController, selected, viewModel)
         },
         bottomBar = {
             MyBottomAppBar(navController, selected)

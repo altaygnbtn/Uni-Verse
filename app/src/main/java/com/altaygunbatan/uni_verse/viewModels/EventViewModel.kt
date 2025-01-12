@@ -25,7 +25,8 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
     private val _showOnlyLiked = MutableStateFlow(false)
     val showOnlyLiked: StateFlow<Boolean> get() = _showOnlyLiked
 
-
+    private val _notifications = mutableStateListOf<String>()
+    val notifications: List<String> = _notifications
 
 
     init {
@@ -77,6 +78,8 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
     fun addEvent(event: Event) {
         viewModelScope.launch {
             eventDao.insertEvent(event)
+            _notifications.add("Event '${event.eventName}' is created.")
+
         }
     }
 
@@ -100,5 +103,10 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
+
+    fun clearNotifications() {
+        _notifications.clear()
+    }
+
 
 }

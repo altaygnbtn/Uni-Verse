@@ -81,7 +81,7 @@ fun CreateEventPage(navController: NavController, viewModel: EventViewModel) {
 
     Scaffold(
         topBar = {
-            MyTopAppBar(navController, selected)
+            MyTopAppBar(navController, selected, viewModel)
         },
         bottomBar = {
             MyBottomAppBar(navController, selected)
@@ -91,10 +91,10 @@ fun CreateEventPage(navController: NavController, viewModel: EventViewModel) {
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
+//                .fillMaxSize()
                 .padding(paddingValues)
                 .background(color = Color(red = 242, green = 244, blue = 243)),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+//            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
 
                 CreateEvent(navController = navController, viewModel = viewModel)

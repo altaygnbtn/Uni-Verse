@@ -58,11 +58,12 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.altaygunbatan.uni_verse.R
 import com.altaygunbatan.uni_verse.dataClasses.UserProfile
+import com.altaygunbatan.uni_verse.viewModels.EventViewModel
 import com.altaygunbatan.uni_verse.viewModels.UserProfileViewModel
 
 
 @Composable
-fun ProfilePage(profileViewModel: UserProfileViewModel, navController: NavController) {
+fun ProfilePage(profileViewModel: UserProfileViewModel, navController: NavController, viewModel: EventViewModel) {
 
 
     val selected = remember {
@@ -71,7 +72,7 @@ fun ProfilePage(profileViewModel: UserProfileViewModel, navController: NavContro
 
     Scaffold(
         topBar = {
-            MyTopAppBar(navController, selected)
+            MyTopAppBar(navController, selected, viewModel )
         },
         bottomBar = {
             MyBottomAppBar(navController, selected)
