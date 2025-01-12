@@ -1072,6 +1072,7 @@ fun CreateEvent(modifier: Modifier = Modifier, navController: NavController, vie
             colors = androidx.compose.material.TextFieldDefaults.textFieldColors(
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
 
                 ),
             shape = RoundedCornerShape(20.dp),
