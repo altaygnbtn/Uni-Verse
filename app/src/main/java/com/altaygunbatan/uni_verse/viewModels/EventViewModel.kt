@@ -16,22 +16,23 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class EventViewModel(application: Application) : AndroidViewModel(application) {
-    private val eventDao: EventDao = AppDatabase.getDatabase(application).eventDao()
+class EventViewModel(application: Application) : AndroidViewModel(application) { //extend AndroidViewModel to access application context
 
-    private val _events = MutableStateFlow<List<Event>>(emptyList())
+    private val eventDao: EventDao = AppDatabase.getDatabase(application).eventDao() //get instance of EventDao from AppDatabase
+
+    private val _events = MutableStateFlow<List<Event>>(emptyList()) //create a MutableStateFlow to hold the list of events
     val events: StateFlow<List<Event>> get() = _events
 
-    private val _showOnlyLiked = MutableStateFlow(false)
-    val showOnlyLiked: StateFlow<Boolean> get() = _showOnlyLiked
+    private val _showOnlyLiked = MutableStateFlow(false)    //create a MutableStateFlow to hold the value of showOnlyLiked and default value is false
+    val showOnlyLiked: StateFlow<Boolean> get() = _showOnlyLiked //get the value of showOnlyLiked
 
-    private val _notifications = mutableStateListOf<String>()
+    private val _notifications = mutableStateListOf<String>()   // hold notifications as a mutable list of strings
     val notifications: List<String> = _notifications
 
 
     init {
-        viewModelScope.launch {
-            eventDao.getAllEvents().collect {
+        viewModelScope.launch {                             //launch a coroutine in the viewModelScope
+            eventDao.getAllEvents().collect {               //collect the list of events from the database
                 _events.value = it
             }
         }
@@ -39,7 +40,7 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
 
     fun toggleLike(event: Event) {
         viewModelScope.launch {
-            val updatedEvent = event.copy(isLiked = !event.isLiked)
+            val updatedEvent = event.copy(isLiked = !event.isLiked)         //update the event with the new value of isLiked
             eventDao.updateEvent(updatedEvent)
         }
     }
@@ -61,7 +62,7 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
 
     fun filterByName() {
         viewModelScope.launch {
-            eventDao.getEventsSortedByName().collect {
+            eventDao.getEventsSortedByName().collect { //collect the list of events from the database, block the coroutine scope until the flow emits a new value
                 _events.value = it
             }
         }
@@ -78,7 +79,7 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
     fun addEvent(event: Event) {
         viewModelScope.launch {
             eventDao.insertEvent(event)
-            _notifications.add("Event '${event.eventName}' is created.")
+            _notifications.add("Event '${event.eventName}' is created.") //add notifications message to _notifications
 
         }
     }
@@ -93,7 +94,7 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
     fun searchEvents(query: String) {
         viewModelScope.launch {
             if (query.isBlank()) {
-                eventDao.getAllEvents().collect {
+                eventDao.getAllEvents().collect {       // if there is no text on Text Field the events are listed and change the new event value
                     _events.value = it
                 }
             } else {

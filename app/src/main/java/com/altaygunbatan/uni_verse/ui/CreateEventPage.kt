@@ -77,7 +77,7 @@ fun CreateEventPage(navController: NavController, viewModel: EventViewModel) {
 
     val selected = remember {
         mutableIntStateOf(R.drawable.navigation_plus)
-    } // plus button is selected
+    } // plus button is selected, used the hint to change the color during navigation
 
     Scaffold(
         topBar = {

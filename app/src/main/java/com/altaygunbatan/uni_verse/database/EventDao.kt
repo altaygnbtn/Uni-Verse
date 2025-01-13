@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 interface EventDao {
 
     @Query("SELECT * FROM events")
-    fun getAllEvents(): Flow<List<Event>>
+    fun getAllEvents(): Flow<List<Event>> //get events
 
     @Insert
     suspend fun insertEvent(event: Event)       //import the events
@@ -27,16 +27,16 @@ interface EventDao {
 
 
     @Query("SELECT * FROM events WHERE isLiked = 1")
-    fun getLikedEvents(): Flow<List<Event>>
+    fun getLikedEvents(): Flow<List<Event>>                 //list the liked events if it is liked by the user
 
     @Query("SELECT * FROM events ORDER BY eventDate ASC")
-    fun getEventsSortedByDate(): Flow<List<Event>>
+    fun getEventsSortedByDate(): Flow<List<Event>>          //list the events by date
 
-    @Query("SELECT * FROM events ORDER BY eventName ASC")
+    @Query("SELECT * FROM events ORDER BY eventName ASC")   //list the events by name
     fun getEventsSortedByName(): Flow<List<Event>>
 
     @Query("SELECT * FROM events WHERE eventName LIKE '%' || :query || '%'")
-    fun searchEventsByName(query: String): Flow<List<Event>>
+    fun searchEventsByName(query: String): Flow<List<Event>>    //search the events by name
 
 
 
