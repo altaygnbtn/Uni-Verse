@@ -685,7 +685,7 @@ fun MyTopAppBar(navController: NavController, selected: MutableState<Int>, viewM
             )
         },
         navigationIcon = {
-            Image(painter = painterResource(id = R.drawable.app_logo_dark),
+            Image(painter = painterResource(id = R.drawable.app_logo_dark), //app logo
                 contentDescription = "App Logo",
                 modifier = Modifier.clip(CircleShape)
                     .size(80.dp))
@@ -693,7 +693,7 @@ fun MyTopAppBar(navController: NavController, selected: MutableState<Int>, viewM
         actions = {
 //
             IconButton(
-                onClick = { expanded = !expanded
+                onClick = { expanded = !expanded            //change the value of expanded and isRed
                             isRed = ! isRed
                 }
             ) {
@@ -706,7 +706,7 @@ fun MyTopAppBar(navController: NavController, selected: MutableState<Int>, viewM
 
             }
             DropdownMenu(
-                expanded = expanded,
+                expanded = expanded, //
                 onDismissRequest = { expanded = false }
             ) {
                 if (viewModel.notifications.isEmpty()) {
