@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.foundation.layout.android)
+    implementation(libs.core.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -123,5 +124,10 @@ dependencies {
 
     // Optionally, you can include the widgets library for ScaleBar, etc.
     implementation ("com.google.maps.android:maps-compose-widgets:6.4.1")
+
+    testImplementation ("junit:junit:4.12")
+    androidTestImplementation ("androidx.test.ext:junit:1.1.0")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.1.1")
+
 
 }
