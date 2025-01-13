@@ -681,9 +681,14 @@ fun MyTopAppBar(navController: NavController, selected: MutableState<Int>, viewM
     TopAppBar(
         title = {
             androidx.compose.material3.Text(
-                "Logo",
-                fontFamily = displayFontFamily
+                ""
             )
+        },
+        navigationIcon = {
+            Image(painter = painterResource(id = R.drawable.app_logo_dark),
+                contentDescription = "App Logo",
+                modifier = Modifier.clip(CircleShape)
+                    .size(80.dp))
         },
         actions = {
 //
