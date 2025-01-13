@@ -1,5 +1,6 @@
 package com.altaygunbatan.uni_verse.ui
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -81,6 +82,14 @@ fun HomePage(navController: NavController, viewModel : EventViewModel) {
     }
 }
 
+@SuppressLint("NewApi")
+@Preview
+@Composable
+fun HomePagePreview(modifier: Modifier = Modifier) {
+
+    HomePage(navController = rememberNavController(), viewModel = EventViewModel(Application()))
+
+}
 
 
 

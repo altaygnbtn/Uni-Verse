@@ -64,7 +64,7 @@ fun ForgotPasswordPage(navController : NavController) {
 
         ForgotPasswordPageToSendLink()
 
-        ForgotPasswordPagrBackButton(navController = navController)
+        ForgotPasswordPageBackButton(navController = navController)
 
 
     }
